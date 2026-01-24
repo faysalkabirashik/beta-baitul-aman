@@ -1,96 +1,127 @@
+@import url('https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
+/* বাইতুল আমান কমিউনিটি প্ল্যাটফর্ম - Design System
+   Islamic Green Theme with Golden Accents
+   Bengali Typography with Hind Siliguri
 */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Primary - Islamic Emerald Green */
+    --primary: 145 60% 42%;
+    --primary-foreground: 0 0% 100%;
+    
+    /* Golden Accent for CTAs */
+    --golden: 43 88% 47%;
+    --golden-foreground: 0 0% 100%;
+    
+    /* Background - Warm Cream */
+    --background: 43 50% 97%;
+    --foreground: 145 30% 15%;
 
+    /* Card - Clean White */
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 145 30% 15%;
 
+    /* Popover */
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 145 30% 15%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    /* Secondary - Light Green */
+    --secondary: 145 40% 92%;
+    --secondary-foreground: 145 60% 25%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Muted */
+    --muted: 145 20% 94%;
+    --muted-foreground: 145 15% 45%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    /* Accent - Emerald Tint */
+    --accent: 145 45% 88%;
+    --accent-foreground: 145 60% 25%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    /* Destructive */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Border & Input */
+    --border: 145 25% 85%;
+    --input: 145 25% 85%;
+    --ring: 145 60% 42%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --radius: 0.75rem;
 
-    --radius: 0.5rem;
+    /* Sidebar - Deep Green */
+    --sidebar-background: 145 45% 15%;
+    --sidebar-foreground: 145 20% 95%;
+    --sidebar-primary: 43 88% 47%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 145 40% 25%;
+    --sidebar-accent-foreground: 145 20% 95%;
+    --sidebar-border: 145 35% 25%;
+    --sidebar-ring: 43 88% 47%;
 
-    --sidebar-background: 0 0% 98%;
+    /* Header Bar */
+    --header-bar: 145 55% 30%;
+    --header-bar-foreground: 0 0% 100%;
 
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Gradient definitions */
+    --gradient-primary: linear-gradient(135deg, hsl(145 60% 42%), hsl(145 55% 35%));
+    --gradient-golden: linear-gradient(135deg, hsl(43 88% 47%), hsl(38 85% 52%));
+    --gradient-hero: linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 100%);
+    
+    /* Shadows */
+    --shadow-soft: 0 4px 20px -4px hsl(145 60% 42% / 0.15);
+    --shadow-golden: 0 4px 20px -4px hsl(43 88% 47% / 0.3);
+    --shadow-card: 0 2px 12px -2px hsl(145 30% 15% / 0.1);
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --primary: 145 50% 50%;
+    --primary-foreground: 0 0% 100%;
+    
+    --golden: 43 88% 55%;
+    --golden-foreground: 0 0% 10%;
+    
+    --background: 145 30% 8%;
+    --foreground: 145 15% 95%;
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+    --card: 145 25% 12%;
+    --card-foreground: 145 15% 95%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 145 25% 12%;
+    --popover-foreground: 145 15% 95%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 145 25% 18%;
+    --secondary-foreground: 145 15% 90%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --muted: 145 20% 18%;
+    --muted-foreground: 145 15% 60%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 145 30% 20%;
+    --accent-foreground: 145 15% 95%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 100%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --border: 145 25% 20%;
+    --input: 145 25% 20%;
+    --ring: 145 50% 50%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --sidebar-background: 145 35% 6%;
+    --sidebar-foreground: 145 15% 95%;
+    --sidebar-primary: 43 88% 55%;
+    --sidebar-primary-foreground: 0 0% 10%;
+    --sidebar-accent: 145 30% 15%;
+    --sidebar-accent-foreground: 145 15% 95%;
+    --sidebar-border: 145 25% 15%;
+    --sidebar-ring: 43 88% 55%;
+
+    --header-bar: 145 40% 12%;
+    --header-bar-foreground: 145 15% 95%;
   }
 }
 
@@ -99,7 +130,138 @@ All colors MUST be HSL.
     @apply border-border;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-bengali antialiased;
+  }
+
+  /* Bengali Typography Enhancement */
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bengali font-semibold tracking-tight;
+  }
+}
+
+@layer components {
+  /* Golden Button Glow */
+  .btn-golden {
+    @apply relative overflow-hidden transition-all duration-300;
+    background: var(--gradient-golden);
+    box-shadow: var(--shadow-golden);
+  }
+  
+  .btn-golden:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px -5px hsl(43 88% 47% / 0.4);
+  }
+
+  /* Emerald Button */
+  .btn-emerald {
+    @apply relative overflow-hidden transition-all duration-300;
+    background: var(--gradient-primary);
+    box-shadow: var(--shadow-soft);
+  }
+
+  .btn-emerald:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px -5px hsl(145 60% 42% / 0.3);
+  }
+
+  /* Card with soft shadow */
+  .card-elevated {
+    @apply bg-card rounded-lg;
+    box-shadow: var(--shadow-card);
+  }
+
+  /* Floating Clock Container */
+  .clock-container {
+    @apply relative;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  }
+
+  /* Hero Overlay */
+  .hero-overlay {
+    background: var(--gradient-hero);
+  }
+
+  /* Animated underline link */
+  .link-underline {
+    @apply relative inline-block;
+  }
+  
+  .link-underline::after {
+    content: '';
+    @apply absolute w-full h-0.5 bottom-0 left-0 bg-golden origin-bottom-right transition-transform duration-300 scale-x-0;
+  }
+  
+  .link-underline:hover::after {
+    @apply scale-x-100 origin-bottom-left;
+  }
+
+  /* Prayer time highlight */
+  .prayer-active {
+    @apply bg-primary/10 border-l-4 border-primary;
+  }
+
+  /* Scrollbar styling */
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    @apply bg-muted rounded-full;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    @apply bg-primary/30 rounded-full hover:bg-primary/50;
+  }
+}
+
+@layer utilities {
+  /* Glass effect */
+  .glass {
+    @apply bg-white/80 backdrop-blur-md;
+  }
+
+  .glass-dark {
+    @apply bg-black/40 backdrop-blur-md;
+  }
+
+  /* Text gradient */
+  .text-gradient-golden {
+    @apply bg-clip-text text-transparent;
+    background-image: var(--gradient-golden);
+  }
+
+  .text-gradient-primary {
+    @apply bg-clip-text text-transparent;
+    background-image: var(--gradient-primary);
+  }
+
+  /* Animation utilities */
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  .animate-pulse-soft {
+    animation: pulseSoft 2s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  @keyframes pulseSoft {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+
+  /* Bengali line height optimization */
+  .bengali-text {
+    line-height: 1.8;
   }
 }
