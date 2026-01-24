@@ -32,9 +32,10 @@ export default function Auth() {
   const { t } = useLanguage();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const isSignup = searchParams.get('signup') === 'true';
+  const isLogin = searchParams.get('login') === 'true';
   
-  const [activeTab, setActiveTab] = useState(isSignup ? 'signup' : 'login');
+  // Default to signup, only show login if explicitly requested
+  const [activeTab, setActiveTab] = useState(isLogin ? 'login' : 'signup');
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 

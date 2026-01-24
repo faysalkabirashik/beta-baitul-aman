@@ -47,7 +47,7 @@ const events: Event[] = [
 ];
 
 export function NoticeBoard() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
 
   return (
     <section id="events" className="py-16 bg-background">
@@ -61,7 +61,7 @@ export function NoticeBoard() {
           <div className="flex items-center justify-center gap-2 mb-2">
             <Bell className="w-6 h-6 text-golden animate-pulse-soft" />
             <h2 className="text-3xl md:text-4xl font-bold text-foreground">
-              {t('notice.title')}
+              {language === 'bn' ? 'নোটিশ বোর্ড' : 'Notice Board'}
             </h2>
           </div>
         </motion.div>
@@ -110,7 +110,10 @@ export function NoticeBoard() {
                 </p>
 
                 <Link to="/learn-quran">
-                  <Button className="btn-golden text-white">
+                  <Button 
+                    className="btn-golden text-white"
+                    onClick={() => window.scrollTo(0, 0)}
+                  >
                     বিস্তারিত দেখুন
                     <ChevronRight className="w-4 h-4 ml-2" />
                   </Button>
