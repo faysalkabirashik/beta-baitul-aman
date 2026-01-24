@@ -12,6 +12,7 @@ import { ProgramDetails } from '@/components/lms/ProgramDetails';
 import { Button } from '@/components/ui/button';
 import { useScrollPosition } from '@/hooks/useFloatingClock';
 import { ArrowRight, User, ChevronDown } from 'lucide-react';
+import baitulAmanNight from '@/assets/baitul-aman-night.png';
 
 const lectures = [
   {
@@ -123,8 +124,8 @@ export default function LearnQuran() {
       <section className="relative h-[30vh] min-h-[200px] max-h-[300px] overflow-hidden">
         <div className="absolute inset-0">
           <img
-            src="https://images.unsplash.com/photo-1564769625905-50e93615e769?w=1920&q=80"
-            alt="Night Mosque"
+            src={baitulAmanNight}
+            alt="Baitul Aman Jamae Masjid at Night"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/30" />

@@ -4,6 +4,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { useFloatingClock, useScrollPosition } from '@/hooks/useFloatingClock';
 import { Button } from '@/components/ui/button';
 import { BookOpen, Heart } from 'lucide-react';
+import baitulAmanImage from '@/assets/baitul-aman.jpg';
 
 export function HeroSection() {
   const { t } = useLanguage();
@@ -16,8 +17,8 @@ export function HeroSection() {
       {/* Background Image */}
       <div className="absolute inset-0">
         <img
-          src="https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=1920&q=80"
-          alt="Mosque"
+          src={baitulAmanImage}
+          alt="Baitul Aman Jamae Masjid"
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 hero-overlay" />
