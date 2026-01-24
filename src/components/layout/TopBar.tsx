@@ -15,11 +15,9 @@ export function TopBar({ showDockedClock = false }: TopBarProps) {
     <div className="sticky top-0 z-50 bg-header-bar text-header-bar-foreground">
       <div className="container mx-auto px-4 py-2">
         <div className="flex items-center justify-between text-sm">
-          {/* Left: Date & Time */}
-          <div className="flex items-center gap-2">
-            <span className="font-medium">{clock.date}</span>
-            <span className="opacity-70">|</span>
-            <span>{clock.time}</span>
+          {/* Left: Date with Hijri */}
+          <div className="flex items-center gap-2 flex-1">
+            <span className="font-medium truncate">{clock.dateWithHijri}</span>
           </div>
 
           {/* Center: Docked Clock (animated) */}
@@ -40,16 +38,18 @@ export function TopBar({ showDockedClock = false }: TopBarProps) {
           </div>
 
           {/* Right: Language Toggle */}
-          <button
-            onClick={toggleLanguage}
-            className="flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
-            aria-label="Toggle Language"
-          >
-            <Globe className="w-4 h-4" />
-            <span className="font-medium">
-              {language === 'bn' ? '🇧🇩 বাংলা' : '🇺🇸 EN'}
-            </span>
-          </button>
+          <div className="flex-1 flex justify-end">
+            <button
+              onClick={toggleLanguage}
+              className="flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+              aria-label="Toggle Language"
+            >
+              <Globe className="w-4 h-4" />
+              <span className="font-medium">
+                {language === 'bn' ? '🇧🇩 বাংলা' : '🇺🇸 EN'}
+              </span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
