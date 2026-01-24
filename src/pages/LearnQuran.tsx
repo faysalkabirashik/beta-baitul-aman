@@ -1,77 +1,53 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { useLanguage } from '@/contexts/LanguageContext';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useLanguage, toBengaliNumber } from '@/contexts/LanguageContext';
 import { TopBar } from '@/components/layout/TopBar';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { VideoPlayer } from '@/components/lms/VideoPlayer';
+import { LecturePlaylist } from '@/components/lms/LecturePlaylist';
 import { QuizModal } from '@/components/lms/QuizModal';
 import { BookStore } from '@/components/lms/BookStore';
 import { ProgramDetails } from '@/components/lms/ProgramDetails';
+import { LMSInfoCarousel } from '@/components/lms/LMSInfoCarousel';
 import { Button } from '@/components/ui/button';
 import { useScrollPosition } from '@/hooks/useFloatingClock';
-import { ArrowRight, User, ChevronDown } from 'lucide-react';
+import { ArrowRight, User, ChevronDown, ChevronUp } from 'lucide-react';
 import baitulAmanNight from '@/assets/baitul-aman-night.png';
 
 const lectures = [
   {
     id: 1,
-    title: 'তাজবীদ শিক্ষা - প্রথম পর্ব',
-    videoUrl: 'https://www.youtube.com/watch?v=_sAO94AJG7U',
+    title: 'কুরআন ক্লাস - ৩ (১১ জানুয়ারি ২০২৬)',
+    videoUrl: 'https://www.youtube.com/watch?v=Jf83GEAr2Bs',
     description: 'তাজবীদের মূল নিয়মাবলী ও মাখরাজ শিক্ষা।',
-    quiz: [
-      {
-        question: 'তাজবীদ শব্দের অর্থ কী?',
-        options: ['সুন্দর করা', 'পড়া', 'লেখা', 'শোনা'],
-        correct: 0,
-      },
-      {
-        question: 'মাখরাজ কাকে বলে?',
-        options: ['হরফের উচ্চারণ স্থান', 'থামার স্থান', 'মিলনের স্থান', 'শুরুর স্থান'],
-        correct: 0,
-      },
-    ],
-  },
-  {
-    id: 2,
-    title: 'তাজবীদ শিক্ষা - দ্বিতীয় পর্ব',
-    videoUrl: 'https://www.youtube.com/watch?v=_sAO94AJG7U',
-    description: 'নূন সাকিন ও তানবীনের বিধান।',
-    quiz: [
-      {
-        question: 'ইযহার কাকে বলে?',
-        options: ['স্পষ্ট করে পড়া', 'মিলিয়ে পড়া', 'লুকিয়ে পড়া', 'টেনে পড়া'],
-        correct: 0,
-      },
-    ],
-  },
-  {
-    id: 3,
-    title: 'সূরা আল-ফাতিহা তিলাওয়াত',
-    videoUrl: 'https://www.youtube.com/watch?v=_sAO94AJG7U',
-    description: 'সূরা আল-ফাতিহার সঠিক তিলাওয়াত শিক্ষা।',
+    date: '১১ জানুয়ারি ২০২৬',
     quiz: [],
   },
   {
-    id: 4,
-    title: 'সূরা আল-বাকারার প্রথম রুকু',
-    videoUrl: 'https://www.youtube.com/watch?v=_sAO94AJG7U',
-    description: 'সূরা আল-বাকারার প্রথম অংশের তিলাওয়াত।',
-    quiz: [
-      {
-        question: 'সূরা আল-বাকারা কোন সূরা?',
-        options: ['দ্বিতীয়', 'প্রথম', 'তৃতীয়', 'চতুর্থ'],
-        correct: 0,
-      },
-    ],
+    id: 2,
+    title: 'কুরআন ক্লাস - ৪ (১২ জানুয়ারি ২০২৬)',
+    videoUrl: 'https://www.youtube.com/watch?v=nFcmV_keW-Y',
+    description: 'নূন সাকিন ও তানবীনের বিধান।',
+    date: '১২ জানুয়ারি ২০২৬',
+    quiz: [],
+  },
+  {
+    id: 3,
+    title: 'কুরআন ক্লাস - ১১ (১৯ জানুয়ারি ২০২৬)',
+    videoUrl: 'https://www.youtube.com/watch?v=YpzEXiK3w5E',
+    description: 'সূরা আল-ফাতিহার সঠিক তিলাওয়াত শিক্ষা।',
+    date: '১৯ জানুয়ারি ২০২৬',
+    quiz: [],
   },
 ];
 
 export default function LearnQuran() {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const navigate = useNavigate();
   const { isScrolled } = useScrollPosition();
+  const detailsRef = useRef<HTMLDivElement>(null);
   
   const [currentLecture, setCurrentLecture] = useState(() => {
     const saved = localStorage.getItem('baitul-aman-lecture');
@@ -115,60 +91,79 @@ export default function LearnQuran() {
     goToNextLecture();
   };
 
+  const handleSelectLecture = (index: number) => {
+    setCurrentLecture(index);
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <TopBar showDockedClock={isScrolled} />
       <Header />
 
-      {/* LMS Banner */}
-      <section className="relative h-[30vh] min-h-[200px] max-h-[300px] overflow-hidden">
+      {/* LMS Banner with Greenish overlay */}
+      <section className="relative min-h-[350px] md:min-h-[400px] overflow-hidden">
         <div className="absolute inset-0">
           <img
             src={baitulAmanNight}
             alt="Baitul Aman Jamae Masjid at Night"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/30" />
+          {/* Greenish gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/60 to-primary/30" />
         </div>
         
-        <div className="relative h-full container mx-auto px-4 flex flex-col justify-end pb-8">
+        <div className="relative h-full container mx-auto px-4 py-8 flex flex-col justify-between">
+          {/* Top Content */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
+            className="text-white"
           >
-            <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
+            <h1 className="text-3xl md:text-4xl font-bold mb-2">
               {t('lms.title')}
             </h1>
-            <p className="text-lg text-white/80 mb-4">
+            <p className="text-lg text-white/90 mb-4">
               {t('lms.instructor')}
             </p>
             <Button
-              variant="outline"
-              className="border-white text-white hover:bg-white hover:text-primary"
+              className="btn-golden text-white"
               onClick={() => setShowDetails(!showDetails)}
             >
               {t('lms.details')}
-              <ChevronDown className={`w-4 h-4 ml-2 transition-transform ${showDetails ? 'rotate-180' : ''}`} />
+              {showDetails ? (
+                <ChevronUp className="w-4 h-4 ml-2" />
+              ) : (
+                <ChevronDown className="w-4 h-4 ml-2" />
+              )}
             </Button>
           </motion.div>
+
+          {/* Info Carousel inside banner */}
+          <div className="mt-6">
+            <LMSInfoCarousel />
+          </div>
         </div>
       </section>
 
       {/* Program Details (Collapsible) */}
-      {showDetails && <ProgramDetails />}
+      <AnimatePresence>
+        {showDetails && (
+          <ProgramDetails onClose={() => setShowDetails(false)} />
+        )}
+      </AnimatePresence>
 
-      {/* Video Section */}
-      <section className="py-12">
+      {/* Video Section with Playlist */}
+      <section className="py-12" ref={detailsRef}>
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-6xl mx-auto">
             {/* Progress Indicator */}
             <div className="mb-6">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm text-muted-foreground">
-                  {t('lms.progress')}: {currentLecture + 1}/{lectures.length}
+                  {t('lms.progress')}: {language === 'bn' ? toBengaliNumber(currentLecture + 1) : currentLecture + 1}/{language === 'bn' ? toBengaliNumber(lectures.length) : lectures.length}
                 </span>
                 <span className="text-sm font-medium text-primary">
-                  {Math.round(((currentLecture + 1) / lectures.length) * 100)}%
+                  {language === 'bn' ? toBengaliNumber(Math.round(((currentLecture + 1) / lectures.length) * 100)) : Math.round(((currentLecture + 1) / lectures.length) * 100)}%
                 </span>
               </div>
               <div className="h-2 bg-muted rounded-full overflow-hidden">
@@ -181,31 +176,45 @@ export default function LearnQuran() {
               </div>
             </div>
 
-            {/* Video Player */}
-            <VideoPlayer
-              lecture={lectures[currentLecture]}
-              lectureNumber={currentLecture + 1}
-            />
+            {/* Video Player + Playlist Layout */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Video Player - Takes 2/3 on desktop */}
+              <div className="lg:col-span-2">
+                <VideoPlayer
+                  lecture={lectures[currentLecture]}
+                  lectureNumber={currentLecture + 1}
+                />
 
-            {/* Navigation */}
-            <div className="flex items-center justify-between mt-6">
-              <Button
-                variant="outline"
-                onClick={handlePrevious}
-                disabled={currentLecture === 0}
-                className={currentLecture === 0 ? 'invisible' : ''}
-              >
-                {t('lms.previous')}
-              </Button>
-              
-              <Button
-                onClick={handleNext}
-                disabled={currentLecture === lectures.length - 1}
-                className="btn-golden text-white"
-              >
-                {t('lms.next')}
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
+                {/* Navigation */}
+                <div className="flex items-center justify-between mt-6">
+                  <Button
+                    variant="outline"
+                    onClick={handlePrevious}
+                    disabled={currentLecture === 0}
+                    className={currentLecture === 0 ? 'invisible' : ''}
+                  >
+                    {t('lms.previous')}
+                  </Button>
+                  
+                  <Button
+                    onClick={handleNext}
+                    disabled={currentLecture === lectures.length - 1}
+                    className="btn-golden text-white"
+                  >
+                    {t('lms.next')}
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                </div>
+              </div>
+
+              {/* Playlist - Takes 1/3 on desktop, full width below on mobile */}
+              <div className="lg:col-span-1">
+                <LecturePlaylist
+                  lectures={lectures}
+                  currentLecture={currentLecture}
+                  onSelectLecture={handleSelectLecture}
+                />
+              </div>
             </div>
 
             {/* Join CTA */}
