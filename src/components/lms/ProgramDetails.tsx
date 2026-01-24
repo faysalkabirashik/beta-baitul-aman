@@ -1,13 +1,8 @@
 import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Calendar, Clock, MapPin, User, Phone, X } from 'lucide-react';
+import { Calendar, Clock, MapPin, User, Phone } from 'lucide-react';
 
-interface ProgramDetailsProps {
-  onClose: () => void;
-}
-
-export function ProgramDetails({ onClose }: ProgramDetailsProps) {
+export function ProgramDetails() {
   return (
     <motion.div
       initial={{ opacity: 0, height: 0 }}
@@ -17,28 +12,17 @@ export function ProgramDetails({ onClose }: ProgramDetailsProps) {
     >
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
-          <Card className="card-elevated relative">
-            {/* Close Button */}
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute top-4 right-4 z-10"
-              onClick={onClose}
-            >
-              <X className="w-5 h-5" />
-            </Button>
-
+          <Card className="card-elevated">
             <CardContent className="p-6 md:p-8">
               <div className="flex flex-col md:flex-row gap-8">
-                {/* Instructor Placeholder */}
+                {/* Instructor Image */}
                 <div className="md:w-1/3">
-                  <div className="aspect-square rounded-xl overflow-hidden bg-muted flex items-center justify-center">
-                    <div className="text-center p-6">
-                      <div className="w-24 h-24 rounded-full bg-primary/20 flex items-center justify-center mx-auto mb-4">
-                        <User className="w-12 h-12 text-primary" />
-                      </div>
-                      <p className="text-sm text-muted-foreground">প্রশিক্ষকের ছবি</p>
-                    </div>
+                  <div className="aspect-square rounded-xl overflow-hidden bg-muted">
+                    <img
+                      src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80"
+                      alt="Instructor"
+                      className="w-full h-full object-cover"
+                    />
                   </div>
                 </div>
 
@@ -50,11 +34,11 @@ export function ProgramDetails({ onClose }: ProgramDetailsProps) {
                   
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <User className="w-5 h-5 text-primary" />
-                    <span className="font-medium">প্রশিক্ষক: হযরত মাওলানা কেফায়াতুল্লাহ</span>
+                    <span className="font-medium">প্রশিক্ষক: মাওলানা কেফায়াতুল্লাহ</span>
                   </div>
 
                   <p className="bengali-text text-muted-foreground">
-                    নোয়াখালী থেকে আগত বিশিষ্ট কারী সাহেব হযরত মাওলানা কেফায়াতুল্লাহ এর পরিচালনায় 
+                    নোয়াখালী থেকে আগত বিশিষ্ট কারী সাহেব মাওলানা কেফায়াতুল্লাহ এর পরিচালনায় 
                     বিশেষ তাজবীদ ও তিলাওয়াত শিক্ষা কোর্স। এই কোর্সে কুরআন মাজীদের সঠিক উচ্চারণ, 
                     মাখরাজ ও তাজবীদের নিয়মাবলী হাতে-কলমে শেখানো হবে।
                   </p>
@@ -122,17 +106,6 @@ export function ProgramDetails({ onClose }: ProgramDetailsProps) {
                         ওয়াকফের নিয়মাবলী
                       </li>
                     </ul>
-                  </div>
-
-                  {/* Collapse Button */}
-                  <div className="pt-4">
-                    <Button
-                      variant="outline"
-                      onClick={onClose}
-                      className="w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground"
-                    >
-                      বন্ধ করুন
-                    </Button>
                   </div>
                 </div>
               </div>
