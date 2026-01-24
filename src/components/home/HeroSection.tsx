@@ -14,7 +14,7 @@ export function HeroSection() {
   const { isScrolled } = useScrollPosition();
 
   return (
-    <section className="relative h-[85vh] min-h-[600px] max-h-[800px] overflow-hidden">
+    <section className="relative h-[75vh] min-h-[500px] max-h-[700px] overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0">
         <img
@@ -26,31 +26,31 @@ export function HeroSection() {
         <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/40 to-primary/20" />
       </div>
 
+      {/* Floating Clock - Top Right Corner */}
+      <motion.div
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ 
+          opacity: isScrolled ? 0 : 1, 
+          x: isScrolled ? 50 : 0,
+        }}
+        transition={{ duration: 0.4, ease: 'easeOut' }}
+        className="absolute top-4 right-4 z-10"
+      >
+        <div className="text-right">
+          <motion.p
+            key={clock.time}
+            initial={{ opacity: 0.5, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="text-3xl md:text-4xl font-bold text-golden drop-shadow-lg"
+          >
+            {clock.time}
+          </motion.p>
+          <p className="text-sm md:text-base text-white/90 drop-shadow-md">{clock.dateWithHijri}</p>
+        </div>
+      </motion.div>
+
       {/* Content */}
       <div className="relative h-full container mx-auto px-4 flex flex-col items-center justify-center text-center text-white">
-        {/* Floating Clock */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ 
-            opacity: isScrolled ? 0 : 1, 
-            y: isScrolled ? -50 : 0,
-            scale: isScrolled ? 0.5 : 1 
-          }}
-          transition={{ duration: 0.4, ease: 'easeOut' }}
-          className="clock-container mb-6"
-        >
-          <div className="glass-dark rounded-2xl px-8 py-4 inline-block">
-            <motion.p
-              key={clock.time}
-              initial={{ opacity: 0.5, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="text-5xl md:text-6xl font-bold text-golden tracking-wider"
-            >
-              {clock.time}
-            </motion.p>
-            <p className="text-lg text-white/80 mt-1">{clock.dateWithHijri}</p>
-          </div>
-        </motion.div>
 
         {/* Title */}
         <motion.h1

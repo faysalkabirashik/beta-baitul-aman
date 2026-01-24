@@ -17,6 +17,12 @@ interface PrayerTimesData {
     time: string;
     remaining: string;
   } | null;
+  currentPrayer: {
+    name: string;
+    nameKey: string;
+  } | null;
+  sehriTime: string;
+  iftarTime: string;
   loading: boolean;
   error: string | null;
 }
@@ -50,6 +56,9 @@ export function usePrayerTimes(
     hijriDate: '',
     prayers: [],
     nextPrayer: null,
+    currentPrayer: null,
+    sehriTime: '',
+    iftarTime: '',
     loading: true,
     error: null,
   });
@@ -88,12 +97,21 @@ export function usePrayerTimes(
           { name: 'ইশা', nameKey: 'prayer.isha', adhan: timings.Isha, iqamah: iqamahTimes.Isha },
         ];
 
-        // Calculate next prayer
+        // Sehri time is Fajr adhan time (end of Sehri)
+        const sehriTime = timings.Fajr;
+        // Iftar time is Maghrib adhan time
+        const iftarTime = timings.Maghrib;
+
+        // Calculate next prayer and current prayer
         const now = new Date();
         const currentMinutes = now.getHours() * 60 + now.getMinutes();
         
         let nextPrayer = null;
-        for (const prayer of prayers) {
+        let currentPrayer = null;
+        let previousPrayer = null;
+        
+        for (let i = 0; i < prayers.length; i++) {
+          const prayer = prayers[i];
           if (prayer.adhan === '-') continue;
           
           const [hours, minutes] = prayer.adhan.split(':').map(Number);
@@ -112,8 +130,25 @@ export function usePrayerTimes(
                 ? `${hoursRemaining}ঘ ${minsRemaining}মি`
                 : `${minsRemaining}মি`,
             };
+            
+            // Current waqt is the previous prayer
+            if (previousPrayer) {
+              currentPrayer = {
+                name: previousPrayer.name,
+                nameKey: previousPrayer.nameKey,
+              };
+            }
             break;
           }
+          previousPrayer = prayer;
+        }
+
+        // If no next prayer found, we're after Isha (current is Isha)
+        if (!nextPrayer && previousPrayer) {
+          currentPrayer = {
+            name: previousPrayer.name,
+            nameKey: previousPrayer.nameKey,
+          };
         }
 
         setData({
@@ -121,6 +156,9 @@ export function usePrayerTimes(
           hijriDate: `${hijri.day} ${hijri.month.en} ${hijri.year}`,
           prayers,
           nextPrayer,
+          currentPrayer,
+          sehriTime,
+          iftarTime,
           loading: false,
           error: null,
         });

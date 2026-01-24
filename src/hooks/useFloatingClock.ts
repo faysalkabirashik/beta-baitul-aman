@@ -12,20 +12,32 @@ interface ClockState {
   hijriDate: string;
 }
 
-// Bengali number mapping for Hijri date
+// Bengali number mapping for Hijri date - handle multiple API formats
 const bengaliHijriMonths: Record<string, string> = {
   'Muḥarram': 'মুহাররম',
+  'Muharram': 'মুহাররম',
   'Ṣafar': 'সফর',
+  'Safar': 'সফর',
   'Rabīʿ al-Awwal': 'রবিউল আওয়াল',
+  "Rabi' al-Awwal": 'রবিউল আওয়াল',
   'Rabīʿ al-Thānī': 'রবিউস সানি',
+  "Rabi' al-Thani": 'রবিউস সানি',
   'Jumādá al-Ūlá': 'জমাদিউল আওয়াল',
+  'Jumada al-Awwal': 'জমাদিউল আওয়াল',
   'Jumādá al-Ākhirah': 'জমাদিউস সানি',
+  'Jumada al-Thani': 'জমাদিউস সানি',
   'Rajab': 'রজব',
   'Shaʿbān': 'শাবান',
+  "Sha'ban": 'শাবান',
+  'Shaban': 'শাবান',
   'Ramaḍān': 'রমজান',
+  'Ramadan': 'রমজান',
   'Shawwāl': 'শাওয়াল',
+  'Shawwal': 'শাওয়াল',
   'Dhū al-Qaʿdah': 'জিলক্বদ',
+  "Dhu al-Qi'dah": 'জিলক্বদ',
   'Dhū al-Ḥijjah': 'জিলহজ্জ',
+  'Dhu al-Hijjah': 'জিলহজ্জ',
 };
 
 // Convert number to Bengali ordinal
