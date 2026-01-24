@@ -25,7 +25,7 @@ export const translations: Translations = {
   // Hero Section
   'hero.title': { bn: 'বাইতুল আমান জামে মসজিদ', en: 'Baitul Aman Jamae Masjid' },
   'hero.subtitle': { bn: 'শান্তির ঘর - ঢাকার প্রাণকেন্দ্রে ইসলামের আলো', en: 'House of Peace - Light of Islam in the Heart of Dhaka' },
-  'hero.cta': { bn: 'কুরআন শিক্ষা ২০২৬', en: 'Learn Quran 2026' },
+  'hero.cta': { bn: 'বিশেষ কোরআন প্রশিক্ষন ২০২৬', en: 'Special Quran Training 2026' },
   'hero.donate': { bn: 'দান করুন', en: 'Donate' },
 
   // Info Carousel
@@ -64,8 +64,8 @@ export const translations: Translations = {
   'footer.rights': { bn: 'সর্বস্বত্ব সংরক্ষিত', en: 'All Rights Reserved' },
 
   // LMS
-  'lms.title': { bn: 'বিশেষ কোরআন শিক্ষা ২০২৬', en: 'Special Quran Education 2026' },
-  'lms.instructor': { bn: 'প্রশিক্ষক: মাওলানা কেফায়াতুল্লাহ', en: 'Instructor: Mawlana Kefayatullah' },
+  'lms.title': { bn: 'বিশেষ কোরআন প্রশিক্ষন ২০২৬', en: 'Special Quran Training 2026' },
+  'lms.instructor': { bn: 'প্রশিক্ষক: হযরত মাওলানা কেফায়াতুল্লাহ', en: 'Instructor: Hazrat Mawlana Kefayatullah' },
   'lms.details': { bn: 'বিস্তারিত', en: 'Details' },
   'lms.lecture': { bn: 'লেকচার', en: 'Lecture' },
   'lms.previous': { bn: 'পূর্ববর্তী', en: 'Previous' },
