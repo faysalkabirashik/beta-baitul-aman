@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useFloatingClock, useScrollPosition } from '@/hooks/useFloatingClock';
 import { Button } from '@/components/ui/button';
-import { BookOpen, Heart } from 'lucide-react';
+import { BookOpen } from 'lucide-react';
 import baitulAmanImage from '@/assets/baitul-aman.jpg';
 
 export function HeroSection() {
@@ -69,12 +69,11 @@ export function HeroSection() {
           {t('hero.subtitle')}
         </motion.p>
 
-        {/* CTA Buttons */}
+        {/* CTA Button - Single button */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="flex flex-col sm:flex-row gap-4"
         >
           <Button
             size="lg"
@@ -83,14 +82,6 @@ export function HeroSection() {
           >
             <BookOpen className="w-5 h-5 mr-2" />
             {t('hero.cta')}
-          </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            className="border-white text-white hover:bg-white hover:text-primary text-lg px-8 py-6"
-          >
-            <Heart className="w-5 h-5 mr-2" />
-            {t('hero.donate')}
           </Button>
         </motion.div>
       </div>
