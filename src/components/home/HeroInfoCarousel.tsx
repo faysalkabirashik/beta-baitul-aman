@@ -46,7 +46,7 @@ const slides: InfoSlide[] = [
   },
 ];
 
-export function LMSInfoCarousel() {
+export function HeroInfoCarousel() {
   const { t } = useLanguage();
   const [currentSlide, setCurrentSlide] = useState(0);
   const touchStartX = useRef<number>(0);
@@ -72,10 +72,8 @@ export function LMSInfoCarousel() {
     const diff = touchStartX.current - touchEndX.current;
     if (Math.abs(diff) > 50) {
       if (diff > 0) {
-        // Swipe left - next slide
         setCurrentSlide((prev) => (prev + 1) % slides.length);
       } else {
-        // Swipe right - previous slide
         setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
       }
     }
@@ -95,7 +93,7 @@ export function LMSInfoCarousel() {
 
   return (
     <div 
-      className="relative"
+      className="relative w-full max-w-2xl mx-auto"
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}

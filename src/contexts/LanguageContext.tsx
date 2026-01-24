@@ -23,7 +23,7 @@ export const translations: Translations = {
   'nav.logout': { bn: 'লগআউট', en: 'Logout' },
 
   // Hero Section
-  'hero.title': { bn: 'বাইতুল আমান জামে মসজিদ', en: 'Baitul Aman Jamae Masjid' },
+  'hero.title': { bn: 'বাইতুল আমান মসজিদ', en: 'Baitul Aman Masjid' },
   'hero.subtitle': { bn: 'শান্তির ঘর - ঢাকার প্রাণকেন্দ্রে ইসলামের আলো', en: 'House of Peace - Light of Islam in the Heart of Dhaka' },
   'hero.cta': { bn: 'বিশেষ কোরআন প্রশিক্ষন ২০২৬', en: 'Special Quran Training 2026' },
   'hero.donate': { bn: 'দান করুন', en: 'Donate' },
@@ -53,7 +53,7 @@ export const translations: Translations = {
   'notice.viewAll': { bn: 'সব দেখুন', en: 'View All' },
 
   // Footer
-  'footer.mosqueName': { bn: 'বাইতুল আমান জামে মসজিদ', en: 'Baitul Aman Jamae Masjid' },
+  'footer.mosqueName': { bn: 'বাইতুল আমান মসজিদ', en: 'Baitul Aman Masjid' },
   'footer.address': { bn: 'ধানমন্ডি, রোড ৭, ঢাকা', en: 'Dhanmondi, Road 7, Dhaka' },
   'footer.officeHours': { bn: 'অফিস সময়', en: 'Office Hours' },
   'footer.officeTime': { bn: 'সকাল ১০টা - দুপুর ১২টা এবং বিকাল ৪টা - সন্ধ্যা ৬টা', en: '10 AM - 12 PM and 4 PM - 6 PM' },

@@ -11,6 +11,7 @@ import { QuizModal } from '@/components/lms/QuizModal';
 import { BookStore } from '@/components/lms/BookStore';
 import { ProgramDetails } from '@/components/lms/ProgramDetails';
 import { LMSInfoCarousel } from '@/components/lms/LMSInfoCarousel';
+import { RegistrationModal } from '@/components/lms/RegistrationModal';
 import { Button } from '@/components/ui/button';
 import { useScrollPosition } from '@/hooks/useFloatingClock';
 import { ArrowRight, User, ChevronDown, ChevronUp } from 'lucide-react';
@@ -47,7 +48,6 @@ export default function LearnQuran() {
   const { t, language } = useLanguage();
   const navigate = useNavigate();
   const { isScrolled } = useScrollPosition();
-  const detailsRef = useRef<HTMLDivElement>(null);
   
   const [currentLecture, setCurrentLecture] = useState(() => {
     const saved = localStorage.getItem('baitul-aman-lecture');
@@ -55,6 +55,7 @@ export default function LearnQuran() {
   });
   const [showQuiz, setShowQuiz] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
+  const [showRegistration, setShowRegistration] = useState(false);
 
   useEffect(() => {
     localStorage.setItem('baitul-aman-lecture', String(currentLecture));
@@ -95,6 +96,11 @@ export default function LearnQuran() {
     setCurrentLecture(index);
   };
 
+  const handleLoginClick = () => {
+    setShowRegistration(false);
+    navigate('/auth');
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <TopBar showDockedClock={isScrolled} />
@@ -105,7 +111,7 @@ export default function LearnQuran() {
         <div className="absolute inset-0">
           <img
             src={baitulAmanNight}
-            alt="Baitul Aman Jamae Masjid at Night"
+            alt="বাইতুল আমান মসজিদ"
             className="w-full h-full object-cover"
           />
           {/* Greenish gradient overlay */}
@@ -153,7 +159,7 @@ export default function LearnQuran() {
       </AnimatePresence>
 
       {/* Video Section with Playlist */}
-      <section className="py-12" ref={detailsRef}>
+      <section className="py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             {/* Progress Indicator */}
@@ -232,7 +238,7 @@ export default function LearnQuran() {
                 লগইন করে আপনার অগ্রগতি সংরক্ষণ করুন। যেকোনো ডিভাইস থেকে শেখা চালিয়ে যান।
               </p>
               <Button
-                onClick={() => navigate('/auth')}
+                onClick={() => setShowRegistration(true)}
                 className="btn-golden text-white"
               >
                 {t('nav.join')}
@@ -254,6 +260,13 @@ export default function LearnQuran() {
         onSkip={handleQuizSkip}
         quiz={lectures[currentLecture]?.quiz || []}
         lectureNumber={currentLecture + 1}
+      />
+
+      {/* Registration Modal */}
+      <RegistrationModal
+        isOpen={showRegistration}
+        onClose={() => setShowRegistration(false)}
+        onLoginClick={handleLoginClick}
       />
 
       <Footer />

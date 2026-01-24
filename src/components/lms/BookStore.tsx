@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { OrderForm } from './OrderForm';
-import { ShoppingCart, Book, BookOpen } from 'lucide-react';
+import { ShoppingCart, Book } from 'lucide-react';
+import bookQuranDinShikkha from '@/assets/book-quran-din-shikkha.png';
+import book21Ghontay from '@/assets/book-21-ghontay.png';
 
 interface BookItem {
   id: string;
@@ -21,19 +23,22 @@ const books: BookItem[] = [
     title: 'নূরানি পদ্দতিতে পবিত্র কুরআন ও দ্বীন শিক্ষা',
     author: 'হযরত মাওলানা কেফায়াতুল্লাহ',
     price: 250,
+    image: bookQuranDinShikkha,
   },
   {
     id: '2',
     title: '২১ ঘন্টায় নুরানি পদ্দবতিতে পবিত্র কুরআন শিক্ষা',
     author: 'হযরত মাওলানা কেফায়াতুল্লাহ',
     price: 180,
+    image: book21Ghontay,
   },
 ];
 
 export function BookStore() {
-  const { t, language } = useLanguage();
+  const { t } = useLanguage();
   const [selectedBook, setSelectedBook] = useState<BookItem | null>(null);
   const [showOrderForm, setShowOrderForm] = useState(false);
+  const orderFormRef = useRef<HTMLDivElement>(null);
 
   const formatPrice = (price: number) => {
     return `৳${price}`;
@@ -44,8 +49,17 @@ export function BookStore() {
     setShowOrderForm(true);
   };
 
+  // Scroll to order form when it opens
+  useEffect(() => {
+    if (showOrderForm && orderFormRef.current) {
+      setTimeout(() => {
+        orderFormRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
+    }
+  }, [showOrderForm]);
+
   return (
-    <section className="py-16 bg-secondary/30">
+    <section id="book-store" className="py-16 bg-secondary/30">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -76,14 +90,19 @@ export function BookStore() {
               className="w-full md:w-1/2"
             >
               <Card className="card-elevated h-full overflow-hidden group">
-                {/* Book Placeholder */}
-                <div className="relative aspect-[3/4] overflow-hidden bg-gradient-to-br from-primary/10 to-golden/10 flex items-center justify-center">
-                  <div className="text-center p-6">
-                    <div className="w-20 h-20 rounded-full bg-primary/20 flex items-center justify-center mx-auto mb-4">
-                      <BookOpen className="w-10 h-10 text-primary" />
+                {/* Book Image */}
+                <div className="relative aspect-[3/4] overflow-hidden bg-gradient-to-br from-primary/10 to-golden/10">
+                  {book.image ? (
+                    <img
+                      src={book.image}
+                      alt={book.title}
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
+                  ) : (
+                    <div className="flex items-center justify-center h-full">
+                      <Book className="w-16 h-16 text-primary/30" />
                     </div>
-                    <p className="text-sm text-muted-foreground">বইয়ের ছবি</p>
-                  </div>
+                  )}
                   {book.isPreOrder && (
                     <div className="absolute top-2 right-2 px-2 py-1 bg-golden text-white text-xs font-semibold rounded">
                       প্রি-অর্ডার
@@ -117,17 +136,19 @@ export function BookStore() {
         </div>
 
         {/* Order Form */}
-        <AnimatePresence>
-          {showOrderForm && selectedBook && (
-            <OrderForm
-              book={selectedBook}
-              onClose={() => {
-                setShowOrderForm(false);
-                setSelectedBook(null);
-              }}
-            />
-          )}
-        </AnimatePresence>
+        <div ref={orderFormRef}>
+          <AnimatePresence>
+            {showOrderForm && selectedBook && (
+              <OrderForm
+                book={selectedBook}
+                onClose={() => {
+                  setShowOrderForm(false);
+                  setSelectedBook(null);
+                }}
+              />
+            )}
+          </AnimatePresence>
+        </div>
       </div>
     </section>
   );

@@ -4,6 +4,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { useFloatingClock, useScrollPosition } from '@/hooks/useFloatingClock';
 import { Button } from '@/components/ui/button';
 import { BookOpen } from 'lucide-react';
+import { HeroInfoCarousel } from './HeroInfoCarousel';
 import baitulAmanImage from '@/assets/baitul-aman.jpg';
 
 export function HeroSection() {
@@ -13,15 +14,16 @@ export function HeroSection() {
   const { isScrolled } = useScrollPosition();
 
   return (
-    <section className="relative h-[70vh] min-h-[500px] max-h-[700px] overflow-hidden">
+    <section className="relative h-[85vh] min-h-[600px] max-h-[800px] overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0">
         <img
           src={baitulAmanImage}
-          alt="Baitul Aman Jamae Masjid"
+          alt="বাইতুল আমান মসজিদ"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 hero-overlay" />
+        {/* Greenish gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-primary/80 via-primary/40 to-primary/20" />
       </div>
 
       {/* Content */}
@@ -46,7 +48,7 @@ export function HeroSection() {
             >
               {clock.time}
             </motion.p>
-            <p className="text-lg text-white/80 mt-1">{clock.date}</p>
+            <p className="text-lg text-white/80 mt-1">{clock.dateWithHijri}</p>
           </div>
         </motion.div>
 
@@ -57,23 +59,24 @@ export function HeroSection() {
           transition={{ delay: 0.2 }}
           className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 drop-shadow-lg"
         >
-          {t('hero.title')}
+          বাইতুল আমান মসজিদ
         </motion.h1>
 
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl"
+          className="text-lg md:text-xl text-white/90 mb-6 max-w-2xl"
         >
           {t('hero.subtitle')}
         </motion.p>
 
-        {/* CTA Button - Single button */}
+        {/* CTA Button */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
+          className="mb-8"
         >
           <Button
             size="lg"
@@ -83,6 +86,16 @@ export function HeroSection() {
             <BookOpen className="w-5 h-5 mr-2" />
             {t('hero.cta')}
           </Button>
+        </motion.div>
+
+        {/* Info Carousel in Hero */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="w-full"
+        >
+          <HeroInfoCarousel />
         </motion.div>
       </div>
 
