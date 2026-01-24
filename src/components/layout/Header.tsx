@@ -52,24 +52,15 @@ export function Header() {
             ))}
           </nav>
 
-          {/* CTA Buttons */}
+          {/* CTA Button - Single Login/Join button */}
           <div className="hidden md:flex items-center gap-2">
             <Button
-              variant="outline"
               size="sm"
               onClick={() => navigate('/auth')}
-              className="border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+              className="btn-golden text-white"
             >
               <LogIn className="w-4 h-4 mr-2" />
               {t('nav.login')}
-            </Button>
-            <Button
-              size="sm"
-              onClick={() => navigate('/auth?signup=true')}
-              className="btn-golden text-white"
-            >
-              <UserPlus className="w-4 h-4 mr-2" />
-              {t('nav.join')}
             </Button>
           </div>
 
@@ -110,25 +101,14 @@ export function Header() {
                 {/* Mobile CTAs */}
                 <div className="flex flex-col gap-2 pt-4 border-t border-border">
                   <Button
-                    variant="outline"
                     onClick={() => {
                       navigate('/auth');
                       setIsOpen(false);
                     }}
-                    className="w-full border-primary text-primary"
+                    className="w-full btn-golden text-white"
                   >
                     <LogIn className="w-4 h-4 mr-2" />
                     {t('nav.login')}
-                  </Button>
-                  <Button
-                    onClick={() => {
-                      navigate('/auth?signup=true');
-                      setIsOpen(false);
-                    }}
-                    className="w-full btn-golden text-white"
-                  >
-                    <UserPlus className="w-4 h-4 mr-2" />
-                    {t('nav.join')}
                   </Button>
                 </div>
               </div>

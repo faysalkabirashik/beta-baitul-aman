@@ -47,16 +47,11 @@ export function BookStore() {
   const handleOrder = (book: BookItem) => {
     setSelectedBook(book);
     setShowOrderForm(true);
+    // Always scroll to order form when clicking order button
+    setTimeout(() => {
+      orderFormRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 100);
   };
-
-  // Scroll to order form when it opens
-  useEffect(() => {
-    if (showOrderForm && orderFormRef.current) {
-      setTimeout(() => {
-        orderFormRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 100);
-    }
-  }, [showOrderForm]);
 
   return (
     <section id="book-store" className="py-16 bg-secondary/30">

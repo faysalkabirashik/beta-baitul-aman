@@ -12,8 +12,39 @@ interface ClockState {
   hijriDate: string;
 }
 
+// Bengali number mapping for Hijri date
+const bengaliHijriMonths: Record<string, string> = {
+  'Muḥarram': 'মুহাররম',
+  'Ṣafar': 'সফর',
+  'Rabīʿ al-Awwal': 'রবিউল আওয়াল',
+  'Rabīʿ al-Thānī': 'রবিউস সানি',
+  'Jumādá al-Ūlá': 'জমাদিউল আওয়াল',
+  'Jumādá al-Ākhirah': 'জমাদিউস সানি',
+  'Rajab': 'রজব',
+  'Shaʿbān': 'শাবান',
+  'Ramaḍān': 'রমজান',
+  'Shawwāl': 'শাওয়াল',
+  'Dhū al-Qaʿdah': 'জিলক্বদ',
+  'Dhū al-Ḥijjah': 'জিলহজ্জ',
+};
+
+// Convert number to Bengali ordinal
+function toBengaliOrdinal(num: number): string {
+  const bengaliNum = toBengaliNumber(num);
+  // Add ordinal suffix based on number
+  if (num === 1) return '১লা';
+  if (num === 2) return '২রা';
+  if (num === 3) return '৩রা';
+  if (num === 4) return '৪ঠা';
+  if (num >= 5 && num <= 18) return bengaliNum + 'ই';
+  if (num === 19) return '১৯শে';
+  if (num === 20) return '২০শে';
+  if (num >= 21 && num <= 31) return bengaliNum + 'শে';
+  return bengaliNum;
+}
+
 // Fetch Hijri date from Aladhan API
-async function fetchHijriDate(): Promise<string> {
+async function fetchHijriDate(): Promise<{ formatted: string; raw: string }> {
   try {
     const today = new Date();
     const dateStr = `${today.getDate()}-${today.getMonth() + 1}-${today.getFullYear()}`;
@@ -21,12 +52,24 @@ async function fetchHijriDate(): Promise<string> {
     const data = await response.json();
     if (data.code === 200 && data.data) {
       const hijri = data.data.hijri;
-      return `${hijri.day} ${hijri.month.ar} ${hijri.year}`;
+      const day = parseInt(hijri.day, 10);
+      const monthEn = hijri.month.en;
+      const year = hijri.year;
+      
+      // Format in Bengali: ৫ই শাবান, ১৪৪৭ হিজরি
+      const bengaliMonth = bengaliHijriMonths[monthEn] || monthEn;
+      const bengaliDay = toBengaliOrdinal(day);
+      const bengaliYear = toBengaliNumber(parseInt(year, 10));
+      
+      return {
+        formatted: `${bengaliDay} ${bengaliMonth}, ${bengaliYear} হিজরি`,
+        raw: `${hijri.day} ${hijri.month.ar} ${hijri.year}`,
+      };
     }
   } catch (error) {
     console.error('Error fetching Hijri date:', error);
   }
-  return '';
+  return { formatted: '', raw: '' };
 }
 
 function formatBengaliDateWithDay(date: Date): string {
@@ -54,11 +97,12 @@ export function useFloatingClock() {
   useEffect(() => {
     // Fetch Hijri date on mount
     fetchHijriDate().then((hijri) => {
-      if (hijri) {
+      if (hijri.formatted) {
         setClock(prev => ({
           ...prev,
-          hijriDate: hijri,
-          dateWithHijri: hijri ? `${hijri} | ${prev.date}` : prev.date,
+          hijriDate: hijri.formatted,
+          // Format: Hijri | International date
+          dateWithHijri: `${hijri.formatted} । ${prev.date}`,
         }));
       }
     });
@@ -71,7 +115,8 @@ export function useFloatingClock() {
       setClock(prev => ({
         time: formatBengaliTime(now),
         date: bengaliDate,
-        dateWithHijri: prev.hijriDate ? `${prev.hijriDate} | ${bengaliDate}` : bengaliDate,
+        // Format: Hijri | International date
+        dateWithHijri: prev.hijriDate ? `${prev.hijriDate} । ${bengaliDate}` : bengaliDate,
         fullDate: now,
         hours: now.getHours(),
         minutes: now.getMinutes(),
