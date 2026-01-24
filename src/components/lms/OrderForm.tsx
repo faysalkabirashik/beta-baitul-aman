@@ -16,7 +16,7 @@ interface BookItem {
   title: string;
   author: string;
   price: number;
-  image?: string;
+  image: string;
   isPreOrder?: boolean;
 }
 
@@ -141,17 +141,11 @@ export function OrderForm({ book, onClose }: OrderFormProps) {
         <CardContent>
           {/* Selected Book */}
           <div className="flex items-center gap-4 p-3 bg-muted/50 rounded-lg mb-6">
-            {book.image ? (
-              <img
-                src={book.image}
-                alt={book.title}
-                className="w-16 h-20 object-cover rounded"
-              />
-            ) : (
-              <div className="w-16 h-20 rounded bg-primary/10 flex items-center justify-center">
-                <span className="text-2xl">📖</span>
-              </div>
-            )}
+            <img
+              src={book.image}
+              alt={book.title}
+              className="w-16 h-20 object-cover rounded"
+            />
             <div>
               <h4 className="font-semibold">{book.title}</h4>
               <p className="text-sm text-muted-foreground">{book.author}</p>
