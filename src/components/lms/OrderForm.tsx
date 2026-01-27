@@ -10,6 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
 import { X, CreditCard, Truck, Loader2, CheckCircle } from 'lucide-react';
 import { z } from 'zod';
+import { supabase } from '@/integrations/supabase/client';
 
 interface BookItem {
   id: string;
@@ -78,21 +79,43 @@ export function OrderForm({ book, onClose }: OrderFormProps) {
 
     setIsSubmitting(true);
 
-    // Simulate order submission
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    try {
+      // Submit to Google Sheets via edge function
+      const { data: result, error } = await supabase.functions.invoke('submit-to-sheets', {
+        body: {
+          formType: 'order',
+          data: {
+            name: formData.name,
+            phone: formData.phone,
+            address: formData.address,
+            bookTitle: book.title,
+            bookPrice: book.price.toString(),
+            orderType: orderType,
+            paymentMethod: paymentMethod,
+          },
+        },
+      });
 
-    // In production, this would:
-    // 1. Save to Supabase
-    // 2. Send WhatsApp notification
-    // 3. Send email confirmation
+      if (error) {
+        console.error('Order submission error:', error);
+        toast.error('অর্ডার জমা দিতে সমস্যা হয়েছে। আবার চেষ্টা করুন।');
+        setIsSubmitting(false);
+        return;
+      }
 
-    setIsSubmitting(false);
-    setIsSuccess(true);
-    toast.success(t('order.success'));
+      console.log('Order submitted successfully:', result);
+      setIsSubmitting(false);
+      setIsSuccess(true);
+      toast.success(t('order.success'));
 
-    setTimeout(() => {
-      onClose();
-    }, 2000);
+      setTimeout(() => {
+        onClose();
+      }, 2000);
+    } catch (err) {
+      console.error('Unexpected error:', err);
+      toast.error('অর্ডার জমা দিতে সমস্যা হয়েছে।');
+      setIsSubmitting(false);
+    }
   };
 
   if (isSuccess) {
