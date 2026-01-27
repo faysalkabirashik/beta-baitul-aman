@@ -7,12 +7,6 @@ interface PrayerTime {
   iqamah: string;
 }
 
-interface ProhibitedTime {
-  name: string;
-  start: string;
-  end: string;
-}
-
 interface PrayerTimesData {
   date: string;
   hijriDate: string;
@@ -29,13 +23,6 @@ interface PrayerTimesData {
   } | null;
   sehriTime: string;
   iftarTime: string;
-  prohibitedTimes: ProhibitedTime[];
-  naflPrayerTimes: {
-    ishraq: { start: string; end: string };
-    chasht: { start: string; end: string };
-    awwabin: { start: string; end: string };
-    tahajjud: { start: string; end: string };
-  };
   loading: boolean;
   error: string | null;
 }
@@ -59,15 +46,6 @@ export const CALCULATION_METHODS = {
   16: 'Dubai (unofficial)',
 };
 
-// Fixed Iqamah times for Baitul Aman Masjid
-const BAITUL_AMAN_IQAMAH: Record<string, string> = {
-  Fajr: '05:55',
-  Dhuhr: '13:30',
-  Asr: '16:30',
-  Maghrib: '17:46',
-  Isha: '19:30',
-};
-
 export function usePrayerTimes(
   latitude: number = 23.7442, // Dhaka default
   longitude: number = 90.3788,
@@ -81,13 +59,6 @@ export function usePrayerTimes(
     currentPrayer: null,
     sehriTime: '',
     iftarTime: '',
-    prohibitedTimes: [],
-    naflPrayerTimes: {
-      ishraq: { start: '', end: '' },
-      chasht: { start: '', end: '' },
-      awwabin: { start: '', end: '' },
-      tahajjud: { start: '', end: '' },
-    },
     loading: true,
     error: null,
   });
@@ -108,62 +79,28 @@ export function usePrayerTimes(
         const timings = json.data.timings;
         const hijri = json.data.date.hijri;
 
-        // Use Baitul Aman Masjid Iqamah times
+        // Manual Iqamah times (can be overridden by admin)
+        const iqamahTimes: Record<string, string> = {
+          Fajr: addMinutes(timings.Fajr, 20),
+          Dhuhr: addMinutes(timings.Dhuhr, 15),
+          Asr: addMinutes(timings.Asr, 15),
+          Maghrib: addMinutes(timings.Maghrib, 5),
+          Isha: addMinutes(timings.Isha, 15),
+        };
+
         const prayers: PrayerTime[] = [
-          { name: 'ফজর', nameKey: 'prayer.fajr', adhan: timings.Fajr, iqamah: BAITUL_AMAN_IQAMAH.Fajr },
-          { name: 'যোহর', nameKey: 'prayer.dhuhr', adhan: timings.Dhuhr, iqamah: BAITUL_AMAN_IQAMAH.Dhuhr },
-          { name: 'আসর', nameKey: 'prayer.asr', adhan: timings.Asr, iqamah: BAITUL_AMAN_IQAMAH.Asr },
-          { name: 'মাগরিব', nameKey: 'prayer.maghrib', adhan: timings.Maghrib, iqamah: BAITUL_AMAN_IQAMAH.Maghrib },
-          { name: 'ইশা', nameKey: 'prayer.isha', adhan: timings.Isha, iqamah: BAITUL_AMAN_IQAMAH.Isha },
+          { name: 'ফজর', nameKey: 'prayer.fajr', adhan: timings.Fajr, iqamah: iqamahTimes.Fajr },
+          { name: 'সূর্যোদয়', nameKey: 'prayer.sunrise', adhan: timings.Sunrise, iqamah: '-' },
+          { name: 'যোহর', nameKey: 'prayer.dhuhr', adhan: timings.Dhuhr, iqamah: iqamahTimes.Dhuhr },
+          { name: 'আসর', nameKey: 'prayer.asr', adhan: timings.Asr, iqamah: iqamahTimes.Asr },
+          { name: 'মাগরিব', nameKey: 'prayer.maghrib', adhan: timings.Maghrib, iqamah: iqamahTimes.Maghrib },
+          { name: 'ইশা', nameKey: 'prayer.isha', adhan: timings.Isha, iqamah: iqamahTimes.Isha },
         ];
 
         // Sehri time is Fajr adhan time (end of Sehri)
         const sehriTime = timings.Fajr;
         // Iftar time is Maghrib adhan time
         const iftarTime = timings.Maghrib;
-
-        // Calculate prohibited times
-        const sunriseTime = timings.Sunrise;
-        const zawalTime = subtractMinutes(timings.Dhuhr, 10); // Approximately 10 min before Dhuhr
-        const sunsetTime = timings.Sunset;
-        
-        const prohibitedTimes: ProhibitedTime[] = [
-          { 
-            name: 'সূর্যোদয়ের সময়', 
-            start: sunriseTime, 
-            end: addMinutes(sunriseTime, 20) 
-          },
-          { 
-            name: 'যাওয়ালের সময়', 
-            start: subtractMinutes(zawalTime, 5), 
-            end: timings.Dhuhr 
-          },
-          { 
-            name: 'সূর্যাস্তের সময়', 
-            start: subtractMinutes(sunsetTime, 20), 
-            end: sunsetTime 
-          },
-        ];
-
-        // Calculate Nafl prayer times
-        const naflPrayerTimes = {
-          ishraq: { 
-            start: addMinutes(sunriseTime, 20), 
-            end: addMinutes(sunriseTime, 60) 
-          },
-          chasht: { 
-            start: addMinutes(sunriseTime, 90), 
-            end: subtractMinutes(zawalTime, 15) 
-          },
-          awwabin: { 
-            start: addMinutes(timings.Maghrib, 15), 
-            end: addMinutes(timings.Maghrib, 60) 
-          },
-          tahajjud: { 
-            start: '03:00', 
-            end: subtractMinutes(timings.Fajr, 10) 
-          },
-        };
 
         // Calculate next prayer and current prayer
         const now = new Date();
@@ -222,8 +159,6 @@ export function usePrayerTimes(
           currentPrayer,
           sehriTime,
           iftarTime,
-          prohibitedTimes,
-          naflPrayerTimes,
           loading: false,
           error: null,
         });
@@ -249,15 +184,6 @@ export function usePrayerTimes(
 function addMinutes(timeStr: string, mins: number): string {
   const [hours, minutes] = timeStr.split(':').map(Number);
   const totalMinutes = hours * 60 + minutes + mins;
-  const newHours = Math.floor(totalMinutes / 60) % 24;
-  const newMinutes = totalMinutes % 60;
-  return `${String(newHours).padStart(2, '0')}:${String(newMinutes).padStart(2, '0')}`;
-}
-
-function subtractMinutes(timeStr: string, mins: number): string {
-  const [hours, minutes] = timeStr.split(':').map(Number);
-  let totalMinutes = hours * 60 + minutes - mins;
-  if (totalMinutes < 0) totalMinutes += 24 * 60;
   const newHours = Math.floor(totalMinutes / 60) % 24;
   const newMinutes = totalMinutes % 60;
   return `${String(newHours).padStart(2, '0')}:${String(newMinutes).padStart(2, '0')}`;

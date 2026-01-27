@@ -14,9 +14,8 @@ export const translations: Translations = {
   // Navigation
   'nav.home': { bn: 'হোম', en: 'Home' },
   'nav.prayerTimes': { bn: 'নামাযের সময়', en: 'Prayer Times' },
-  'nav.notices': { bn: 'নোটিশ', en: 'Notices' },
+  'nav.events': { bn: 'অনুষ্ঠান', en: 'Events' },
   'nav.services': { bn: 'সেবাসমূহ', en: 'Services' },
-  'nav.about': { bn: 'আমাদের সম্পর্কে', en: 'About Us' },
   'nav.learnQuran': { bn: 'কুরআন শিক্ষা', en: 'Learn Quran' },
   'nav.join': { bn: 'যুক্ত হোন', en: 'Join Us' },
   'nav.login': { bn: 'লগইন', en: 'Login' },
