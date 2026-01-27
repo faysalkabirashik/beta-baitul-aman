@@ -15,8 +15,9 @@ export function Header() {
     { key: 'nav.home', href: '/' },
     { key: 'nav.prayerTimes', href: '/#prayer-times' },
     { key: 'nav.learnQuran', href: '/learn-quran' },
-    { key: 'nav.events', href: '/#events' },
+    { key: 'nav.notices', href: '/#notices' },
     { key: 'nav.services', href: '/#services' },
+    { key: 'nav.about', href: '/#about' },
   ];
 
   return (

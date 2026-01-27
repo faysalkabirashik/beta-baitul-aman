@@ -1,21 +1,19 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { useLanguage } from '@/contexts/LanguageContext';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { supabase } from '@/integrations/supabase/client';
+import { Textarea } from '@/components/ui/textarea';
 import { toast } from 'sonner';
-import { Loader2, Phone, Mail, Lock, User, Calendar, CheckCircle } from 'lucide-react';
+import { Loader2, Phone, Mail, User, MapPin, CheckCircle } from 'lucide-react';
 import { z } from 'zod';
 
 const registrationSchema = z.object({
-  phone: z.string().regex(/^01[3-9]\d{8}$/, 'সঠিক ফোন নম্বর দিন (01XXXXXXXXX)'),
+  name: z.string().min(2, 'নাম কমপক্ষে ২ অক্ষরের হতে হবে').max(100),
   email: z.string().email('সঠিক ইমেইল দিন').optional().or(z.literal('')),
-  password: z.string().min(6, 'পাসওয়ার্ড কমপক্ষে ৬ অক্ষরের হতে হবে'),
-  name: z.string().min(2, 'নাম কমপক্ষে ২ অক্ষরের হতে হবে'),
-  age: z.string().min(1, 'বয়স দিন'),
+  phone: z.string().regex(/^01[3-9]\d{8}$/, 'সঠিক ফোন নম্বর দিন (01XXXXXXXXX)'),
+  address: z.string().min(10, 'সম্পূর্ণ ঠিকানা দিন').max(500),
 });
 
 interface RegistrationModalProps {
@@ -25,17 +23,15 @@ interface RegistrationModalProps {
 }
 
 export function RegistrationModal({ isOpen, onClose, onLoginClick }: RegistrationModalProps) {
-  const { t } = useLanguage();
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const [formData, setFormData] = useState({
-    phone: '',
-    email: '',
-    password: '',
     name: '',
-    age: '',
+    email: '',
+    phone: '',
+    address: '',
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -59,40 +55,17 @@ export function RegistrationModal({ isOpen, onClose, onLoginClick }: Registratio
 
     setIsLoading(true);
 
-    // Use phone as email if no email provided
-    const emailToUse = formData.email || `${formData.phone}@baitulaman.local`;
-
-    const { error } = await supabase.auth.signUp({
-      email: emailToUse,
-      password: formData.password,
-      options: {
-        emailRedirectTo: `${window.location.origin}/`,
-        data: {
-          full_name: formData.name,
-          phone: formData.phone,
-          age: formData.age,
-        },
-      },
-    });
+    // Simulate submission
+    await new Promise(resolve => setTimeout(resolve, 1500));
 
     setIsLoading(false);
-
-    if (error) {
-      if (error.message.includes('already registered')) {
-        toast.error('এই ফোন নম্বর/ইমেইল দিয়ে ইতিমধ্যে নিবন্ধন করা হয়েছে');
-      } else {
-        toast.error(error.message);
-      }
-      return;
-    }
-
     setIsSuccess(true);
-    toast.success('সফলভাবে নিবন্ধন হয়েছে!');
+    toast.success('সফলভাবে সাবমিট হয়েছে!');
     
     setTimeout(() => {
       onClose();
       setIsSuccess(false);
-      setFormData({ phone: '', email: '', password: '', name: '', age: '' });
+      setFormData({ name: '', email: '', phone: '', address: '' });
     }, 2000);
   };
 
@@ -109,10 +82,10 @@ export function RegistrationModal({ isOpen, onClose, onLoginClick }: Registratio
               <CheckCircle className="w-16 h-16 text-primary mx-auto mb-4" />
             </motion.div>
             <h3 className="text-2xl font-bold text-foreground mb-2">
-              সফলভাবে নিবন্ধন হয়েছে!
+              সফলভাবে সাবমিট হয়েছে!
             </h3>
             <p className="text-muted-foreground bengali-text">
-              আপনি এখন লগইন করতে পারবেন।
+              আপনার তথ্য গ্রহণ করা হয়েছে।
             </p>
           </div>
         </DialogContent>
@@ -125,27 +98,27 @@ export function RegistrationModal({ isOpen, onClose, onLoginClick }: Registratio
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="text-center text-xl">
-            নিবন্ধন এর জন্য তথ্য দিন
+            আপনার তথ্য দিন
           </DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4 py-4">
-          {/* Phone */}
+          {/* Name */}
           <div className="space-y-2">
-            <Label htmlFor="reg-phone">ফোন নম্বর *</Label>
+            <Label htmlFor="reg-name">নাম *</Label>
             <div className="relative">
-              <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <Input
-                id="reg-phone"
-                type="tel"
-                value={formData.phone}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                placeholder="01XXXXXXXXX"
-                className={`pl-10 ${errors.phone ? 'border-destructive' : ''}`}
+                id="reg-name"
+                type="text"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                placeholder="আপনার নাম"
+                className={`pl-10 ${errors.name ? 'border-destructive' : ''}`}
               />
             </div>
-            {errors.phone && (
-              <p className="text-sm text-destructive">{errors.phone}</p>
+            {errors.name && (
+              <p className="text-sm text-destructive">{errors.name}</p>
             )}
           </div>
 
@@ -168,60 +141,41 @@ export function RegistrationModal({ isOpen, onClose, onLoginClick }: Registratio
             )}
           </div>
 
-          {/* Password */}
+          {/* Phone */}
           <div className="space-y-2">
-            <Label htmlFor="reg-password">পাসওয়ার্ড *</Label>
+            <Label htmlFor="reg-phone">ফোন নম্বর *</Label>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <Input
-                id="reg-password"
-                type="password"
-                value={formData.password}
-                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                placeholder="••••••••"
-                className={`pl-10 ${errors.password ? 'border-destructive' : ''}`}
+                id="reg-phone"
+                type="tel"
+                value={formData.phone}
+                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                placeholder="01XXXXXXXXX"
+                className={`pl-10 ${errors.phone ? 'border-destructive' : ''}`}
               />
             </div>
-            {errors.password && (
-              <p className="text-sm text-destructive">{errors.password}</p>
+            {errors.phone && (
+              <p className="text-sm text-destructive">{errors.phone}</p>
             )}
           </div>
 
-          {/* Name */}
+          {/* Address */}
           <div className="space-y-2">
-            <Label htmlFor="reg-name">নাম *</Label>
+            <Label htmlFor="reg-address">ঠিকানা *</Label>
             <div className="relative">
-              <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <Input
-                id="reg-name"
-                type="text"
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                placeholder="আপনার নাম"
-                className={`pl-10 ${errors.name ? 'border-destructive' : ''}`}
+              <MapPin className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
+              <Textarea
+                id="reg-address"
+                value={formData.address}
+                onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                placeholder="সম্পূর্ণ ঠিকানা"
+                rows={2}
+                className={`pl-10 ${errors.address ? 'border-destructive' : ''}`}
               />
             </div>
-            {errors.name && (
-              <p className="text-sm text-destructive">{errors.name}</p>
-            )}
-          </div>
-
-          {/* Age */}
-          <div className="space-y-2">
-            <Label htmlFor="reg-age">বয়স (আনুমানিক) *</Label>
-            <div className="relative">
-              <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <Input
-                id="reg-age"
-                type="text"
-                value={formData.age}
-                onChange={(e) => setFormData({ ...formData, age: e.target.value })}
-                placeholder="২৫"
-                className={`pl-10 ${errors.age ? 'border-destructive' : ''}`}
-              />
-            </div>
-            {errors.age && (
-              <p className="text-sm text-destructive">{errors.age}</p>
+            {errors.address && (
+              <p className="text-sm text-destructive">{errors.address}</p>
             )}
           </div>
 
@@ -243,7 +197,7 @@ export function RegistrationModal({ isOpen, onClose, onLoginClick }: Registratio
 
           {/* Already registered option */}
           <p className="text-center text-sm text-muted-foreground pt-2">
-            অলরেডি নিবন্ধন আছে?{' '}
+            অলরেডি অ্যাকাউন্ট আছে?{' '}
             <button
               type="button"
               onClick={onLoginClick}
