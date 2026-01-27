@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useLanguage, toBengaliNumber } from '@/contexts/LanguageContext';
 import { TopBar } from '@/components/layout/TopBar';
 import { Header } from '@/components/layout/Header';
@@ -9,12 +9,12 @@ import { VideoPlayer } from '@/components/lms/VideoPlayer';
 import { LecturePlaylist } from '@/components/lms/LecturePlaylist';
 import { QuizModal } from '@/components/lms/QuizModal';
 import { BookStore } from '@/components/lms/BookStore';
-import { ProgramDetails } from '@/components/lms/ProgramDetails';
 import { LMSInfoCarousel } from '@/components/lms/LMSInfoCarousel';
 import { RegistrationModal } from '@/components/lms/RegistrationModal';
+import { CourseInfoSection } from '@/components/lms/CourseInfoSection';
 import { Button } from '@/components/ui/button';
 import { useScrollPosition } from '@/hooks/useFloatingClock';
-import { ArrowRight, User, ChevronDown, ChevronUp } from 'lucide-react';
+import { ArrowRight, User } from 'lucide-react';
 import baitulAmanNight from '@/assets/baitul-aman-night.png';
 
 const lectures = [
@@ -54,7 +54,6 @@ export default function LearnQuran() {
     return saved ? parseInt(saved, 10) : 0;
   });
   const [showQuiz, setShowQuiz] = useState(false);
-  const [showDetails, setShowDetails] = useState(false);
   const [showRegistration, setShowRegistration] = useState(false);
 
   useEffect(() => {
@@ -131,17 +130,6 @@ export default function LearnQuran() {
             <p className="text-lg text-white/90 mb-4">
               {t('lms.instructor')}
             </p>
-            <Button
-              className="btn-golden text-white"
-              onClick={() => setShowDetails(!showDetails)}
-            >
-              {t('lms.details')}
-              {showDetails ? (
-                <ChevronUp className="w-4 h-4 ml-2" />
-              ) : (
-                <ChevronDown className="w-4 h-4 ml-2" />
-              )}
-            </Button>
           </motion.div>
 
           {/* Info Carousel inside banner */}
@@ -150,13 +138,6 @@ export default function LearnQuran() {
           </div>
         </div>
       </section>
-
-      {/* Program Details (Collapsible) */}
-      <AnimatePresence>
-        {showDetails && (
-          <ProgramDetails onClose={() => setShowDetails(false)} />
-        )}
-      </AnimatePresence>
 
       {/* Video Section with Playlist */}
       <section className="py-12">
@@ -222,6 +203,9 @@ export default function LearnQuran() {
                 />
               </div>
             </div>
+
+            {/* Course Info Section */}
+            <CourseInfoSection />
 
             {/* Join CTA */}
             <motion.div
