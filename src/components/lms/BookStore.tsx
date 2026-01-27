@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { toast } from 'sonner';
-import { Book, ShoppingCart, Loader2, CheckCircle, Gift, Truck, CreditCard, Minus, Plus } from 'lucide-react';
+import { Book, ShoppingCart, Loader2, CheckCircle, Gift } from 'lucide-react';
 import { z } from 'zod';
 import { supabase } from '@/integrations/supabase/client';
 import bookQuranDinShikkha from '@/assets/book-quran-din-shikkha.png';
@@ -32,7 +32,7 @@ export function BookStore() {
   const { t } = useLanguage();
   const [showForm, setShowForm] = useState(false);
   const [quantity, setQuantity] = useState(1);
-  const [paymentMethod, setPaymentMethod] = useState('bkash');
+  
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   
@@ -82,7 +82,6 @@ export function BookStore() {
             bookPrice: totalPrice.toString(),
             quantity: quantity.toString(),
             orderType: 'buy',
-            paymentMethod: paymentMethod,
           },
         },
       });
@@ -111,11 +110,6 @@ export function BookStore() {
     }
   };
 
-  const paymentOptions = [
-    { id: 'cod', label: 'ক্যাশ অন ডেলিভারি', icon: <Truck className="w-4 h-4" /> },
-    { id: 'bkash', label: 'বিকাশ', icon: <CreditCard className="w-4 h-4" /> },
-    { id: 'nagad', label: 'নগদ', icon: <CreditCard className="w-4 h-4" /> },
-  ];
 
   if (isSuccess) {
     return (
@@ -288,33 +282,6 @@ export function BookStore() {
                           {errors.address && (
                             <p className="text-sm text-destructive">{errors.address}</p>
                           )}
-                        </div>
-
-                        {/* Payment Method */}
-                        <div className="space-y-2">
-                          <Label>পেমেন্ট পদ্ধতি</Label>
-                          <RadioGroup
-                            value={paymentMethod}
-                            onValueChange={setPaymentMethod}
-                            className="grid grid-cols-3 gap-2"
-                          >
-                            {paymentOptions.map((option) => (
-                              <div key={option.id}>
-                                <RadioGroupItem
-                                  value={option.id}
-                                  id={`payment-${option.id}`}
-                                  className="peer sr-only"
-                                />
-                                <Label
-                                  htmlFor={`payment-${option.id}`}
-                                  className="flex flex-col items-center justify-center gap-1 p-3 rounded-lg border-2 border-muted cursor-pointer transition-colors peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary/5"
-                                >
-                                  {option.icon}
-                                  <span className="text-xs text-center">{option.label}</span>
-                                </Label>
-                              </div>
-                            ))}
-                          </RadioGroup>
                         </div>
 
                         {/* Submit */}
