@@ -219,17 +219,6 @@ export function RegistrationModal({ isOpen, onClose, onLoginClick }: Registratio
             )}
           </Button>
 
-          {/* Already registered option */}
-          <p className="text-center text-sm text-muted-foreground pt-2">
-            অলরেডি নিবন্ধন আছে?{' '}
-            <button
-              type="button"
-              onClick={onLoginClick}
-              className="text-primary font-medium hover:underline"
-            >
-              লগইন করুন
-            </button>
-          </p>
         </form>
       </DialogContent>
     </Dialog>
