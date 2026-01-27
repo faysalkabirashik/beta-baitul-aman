@@ -93,13 +93,13 @@ export function HeroInfoCarousel() {
 
   return (
     <div 
-      className="relative w-full max-w-2xl mx-auto"
+      className="relative w-full max-w-md mx-auto"
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
       {/* Carousel Container */}
-      <div className="relative h-[140px] md:h-[120px] overflow-hidden rounded-xl bg-white/10 backdrop-blur-md border border-white/20 cursor-pointer hover:bg-white/15 transition-colors">
+      <div className="relative h-[120px] md:h-[100px] overflow-hidden rounded-xl bg-white/10 backdrop-blur-md border border-white/20 cursor-pointer hover:bg-white/15 transition-colors">
         <AnimatePresence mode="wait">
           <motion.div
             key={slides[currentSlide].id}

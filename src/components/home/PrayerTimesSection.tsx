@@ -2,11 +2,11 @@ import { motion } from 'framer-motion';
 import { useLanguage, toBengaliNumber } from '@/contexts/LanguageContext';
 import { usePrayerTimes } from '@/hooks/usePrayerTimes';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Clock, Sun, Moon, Loader2, Sunrise, Sunset } from 'lucide-react';
+import { Clock, Sun, Moon, Loader2, Sunrise, Sunset, AlertTriangle, Star } from 'lucide-react';
 
 export function PrayerTimesSection() {
   const { t, language } = useLanguage();
-  const { prayers, nextPrayer, currentPrayer, sehriTime, iftarTime, hijriDate, loading, error } = usePrayerTimes();
+  const { prayers, nextPrayer, currentPrayer, sehriTime, iftarTime, prohibitedTimes, naflPrayerTimes, hijriDate, loading, error } = usePrayerTimes();
 
   const formatTime = (time: string) => {
     if (time === '-' || !time) return '-';
@@ -92,13 +92,13 @@ export function PrayerTimesSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 0.1 }}
-            className="lg:col-span-3"
+            className="lg:col-span-2"
           >
             <Card className="card-elevated h-full">
               <CardHeader className="pb-2">
                 <CardTitle className="flex items-center gap-2 text-lg">
                   <Sun className="w-5 h-5 text-golden" />
-                  {t('prayer.title')}
+                  বাইতুল আমান মসজিদ ইকামতের সময়সূচি
                   <Moon className="w-5 h-5 text-primary ml-auto" />
                 </CardTitle>
               </CardHeader>
@@ -122,7 +122,7 @@ export function PrayerTimesSection() {
                         </tr>
                       </thead>
                       <tbody>
-                        {prayers.map((prayer, index) => (
+                        {prayers.map((prayer) => (
                           <tr
                             key={prayer.nameKey}
                             className={`border-b border-border/50 transition-colors ${
@@ -210,6 +210,77 @@ export function PrayerTimesSection() {
                   <p className="text-2xl font-bold text-amber-200">
                     {formatTime(iftarTime)}
                   </p>
+                </CardContent>
+              </Card>
+            </div>
+          </motion.div>
+
+          {/* Prohibited & Nafl Prayer Times */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3 }}
+            className="lg:col-span-1"
+          >
+            <div className="space-y-4 h-full flex flex-col">
+              {/* Prohibited Times */}
+              <Card className="flex-1 border-red-200 bg-red-50 dark:bg-red-950/20 dark:border-red-900">
+                <CardHeader className="pb-2 pt-3">
+                  <CardTitle className="flex items-center gap-2 text-sm text-red-700 dark:text-red-400">
+                    <AlertTriangle className="w-4 h-4" />
+                    নামাজের নিষিদ্ধ সময়
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="pt-0 pb-3">
+                  <ul className="space-y-1 text-xs">
+                    {prohibitedTimes.map((time, index) => (
+                      <li key={index} className="flex justify-between text-red-600 dark:text-red-400">
+                        <span>{time.name}</span>
+                        <span className="font-medium">
+                          {formatTime(time.start)} - {formatTime(time.end)}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+              </Card>
+
+              {/* Nafl Prayer Times */}
+              <Card className="flex-1 border-emerald-200 bg-emerald-50 dark:bg-emerald-950/20 dark:border-emerald-900">
+                <CardHeader className="pb-2 pt-3">
+                  <CardTitle className="flex items-center gap-2 text-sm text-emerald-700 dark:text-emerald-400">
+                    <Star className="w-4 h-4" />
+                    নফল নামাজের সময়
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="pt-0 pb-3">
+                  <ul className="space-y-1 text-xs">
+                    <li className="flex justify-between text-emerald-600 dark:text-emerald-400">
+                      <span>ইশরাক</span>
+                      <span className="font-medium">
+                        {formatTime(naflPrayerTimes.ishraq.start)} - {formatTime(naflPrayerTimes.ishraq.end)}
+                      </span>
+                    </li>
+                    <li className="flex justify-between text-emerald-600 dark:text-emerald-400">
+                      <span>চাশত/দুহা</span>
+                      <span className="font-medium">
+                        {formatTime(naflPrayerTimes.chasht.start)} - {formatTime(naflPrayerTimes.chasht.end)}
+                      </span>
+                    </li>
+                    <li className="flex justify-between text-emerald-600 dark:text-emerald-400">
+                      <span>আওয়াবীন</span>
+                      <span className="font-medium">
+                        {formatTime(naflPrayerTimes.awwabin.start)} - {formatTime(naflPrayerTimes.awwabin.end)}
+                      </span>
+                    </li>
+                    <li className="flex justify-between text-emerald-600 dark:text-emerald-400">
+                      <span>তাহাজ্জুদ</span>
+                      <span className="font-medium">
+                        {formatTime(naflPrayerTimes.tahajjud.start)} - {formatTime(naflPrayerTimes.tahajjud.end)}
+                      </span>
+                    </li>
+                  </ul>
                 </CardContent>
               </Card>
             </div>
