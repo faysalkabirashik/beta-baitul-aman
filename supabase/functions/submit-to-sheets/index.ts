@@ -71,12 +71,102 @@ async function getAccessToken(serviceAccount: any): Promise<string> {
   return data.access_token;
 }
 
+// Check if a sheet exists
+async function sheetExists(
+  accessToken: string,
+  spreadsheetId: string,
+  sheetName: string
+): Promise<boolean> {
+  const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}`;
+  
+  const response = await fetch(url, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+
+  if (!response.ok) {
+    console.error("Error checking spreadsheet:", await response.json());
+    return false;
+  }
+
+  const data = await response.json();
+  const sheets = data.sheets || [];
+  return sheets.some((sheet: any) => sheet.properties?.title === sheetName);
+}
+
+// Create a new sheet
+async function createSheet(
+  accessToken: string,
+  spreadsheetId: string,
+  sheetName: string,
+  headers: string[]
+): Promise<void> {
+  // First, add the sheet
+  const addSheetUrl = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}:batchUpdate`;
+  
+  const addSheetResponse = await fetch(addSheetUrl, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      requests: [{
+        addSheet: {
+          properties: {
+            title: sheetName,
+          },
+        },
+      }],
+    }),
+  });
+
+  if (!addSheetResponse.ok) {
+    const error = await addSheetResponse.json();
+    console.error("Error creating sheet:", error);
+    throw new Error(`Failed to create sheet: ${error.error?.message || 'Unknown error'}`);
+  }
+
+  console.log(`Created sheet: ${sheetName}`);
+
+  // Then add headers
+  const headersUrl = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${encodeURIComponent(sheetName)}!A1:${String.fromCharCode(64 + headers.length)}1?valueInputOption=USER_ENTERED`;
+  
+  const headersResponse = await fetch(headersUrl, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ values: [headers] }),
+  });
+
+  if (!headersResponse.ok) {
+    const error = await headersResponse.json();
+    console.error("Error adding headers:", error);
+    // Don't throw - sheet is created, headers can be added manually
+  } else {
+    console.log(`Added headers to sheet: ${sheetName}`);
+  }
+}
+
 async function appendToSheet(
   accessToken: string,
   spreadsheetId: string,
   sheetName: string,
-  values: string[][]
+  values: string[][],
+  headers: string[]
 ): Promise<void> {
+  // Check if sheet exists, create if not
+  const exists = await sheetExists(accessToken, spreadsheetId, sheetName);
+  
+  if (!exists) {
+    console.log(`Sheet "${sheetName}" does not exist, creating it...`);
+    await createSheet(accessToken, spreadsheetId, sheetName, headers);
+  }
+
   const range = `${sheetName}!A:Z`;
   const url = `https://sheets.googleapis.com/v4/spreadsheets/${spreadsheetId}/values/${encodeURIComponent(range)}:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS`;
 
@@ -123,13 +213,15 @@ serve(async (req) => {
     // Get access token
     const accessToken = await getAccessToken(serviceAccount);
 
-    // Determine sheet name and format data based on form type
+    // Determine sheet name, headers, and format data based on form type
     let sheetName: string;
+    let headers: string[];
     let rowData: string[];
     const timestamp = new Date().toLocaleString('bn-BD', { timeZone: 'Asia/Dhaka' });
 
     if (formType === "order") {
       sheetName = "Orders";
+      headers = ["Timestamp", "Name", "Phone", "Address", "Book Title", "Price", "Quantity", "Order Type", "Status"];
       rowData = [
         timestamp,
         data.name || "",
@@ -137,25 +229,26 @@ serve(async (req) => {
         data.address || "",
         data.bookTitle || "",
         data.bookPrice || "",
-        data.orderType || "",
-        data.paymentMethod || "",
+        data.quantity || "1",
+        data.orderType || "buy",
         "Pending"
       ];
     } else if (formType === "registration") {
       sheetName = "Registrations";
+      headers = ["Timestamp", "Name", "Phone", "Email", "Address", "Status"];
       rowData = [
         timestamp,
         data.name || "",
         data.phone || "",
         data.email || "",
-        data.age || "",
+        data.address || "",
         "Active"
       ];
     } else {
       throw new Error(`Unknown form type: ${formType}`);
     }
 
-    await appendToSheet(accessToken, spreadsheetId, sheetName, [rowData]);
+    await appendToSheet(accessToken, spreadsheetId, sheetName, [rowData], headers);
 
     return new Response(
       JSON.stringify({ success: true, message: "Data saved successfully" }),
