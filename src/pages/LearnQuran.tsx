@@ -127,8 +127,11 @@ export default function LearnQuran() {
             <h1 className="text-3xl md:text-4xl font-bold mb-2">
               {t('lms.title')}
             </h1>
-            <p className="text-lg text-white/90 mb-4">
+            <p className="text-lg text-white/90 mb-1">
               {t('lms.instructor')}
+            </p>
+            <p className="text-sm text-white/75 bengali-text">
+              মহাপরিচালক, নূরানি ফাউন্ডেশন । ইমাম প্রশিক্ষক, ইসলামিক ফাউন্ডেশন
             </p>
           </motion.div>
 

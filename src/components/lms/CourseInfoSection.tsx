@@ -17,6 +17,9 @@ export function CourseInfoSection() {
         <p className="text-muted-foreground bengali-text">
           প্রশিক্ষক: হযরত মাওলানা কেফায়াতুল্লাহ
         </p>
+        <p className="text-sm text-muted-foreground/80 bengali-text">
+          মহাপরিচালক, নূরানি ফাউন্ডেশন । ইমাম প্রশিক্ষক, ইসলামিক ফাউন্ডেশন
+        </p>
       </div>
 
       <p className="text-center text-muted-foreground bengali-text mb-6 max-w-2xl mx-auto">
@@ -27,12 +30,12 @@ export function CourseInfoSection() {
         <div className="flex flex-col items-center p-4 bg-background/50 rounded-lg">
           <Clock className="w-5 h-5 text-primary mb-2" />
           <span className="text-xs text-muted-foreground">সময়কাল</span>
-          <span className="font-semibold text-foreground text-center bengali-text">জানুয়ারি - ফেব্রুয়ারি ২৯</span>
+          <span className="font-semibold text-foreground text-center bengali-text">৯ জানুয়ারি - ২৯ ফেব্রুয়ারি'২৬</span>
         </div>
         <div className="flex flex-col items-center p-4 bg-background/50 rounded-lg">
           <Clock className="w-5 h-5 text-primary mb-2" />
           <span className="text-xs text-muted-foreground">সময়</span>
-          <span className="font-semibold text-foreground bengali-text">মাগরিবের পর</span>
+          <span className="font-semibold text-foreground bengali-text">বাদ এশা (১ ঘন্টা)</span>
         </div>
         <div className="flex flex-col items-center p-4 bg-background/50 rounded-lg">
           <MapPin className="w-5 h-5 text-primary mb-2" />
