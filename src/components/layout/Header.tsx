@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
@@ -9,15 +9,41 @@ import { motion } from 'framer-motion';
 export function Header() {
   const { t } = useLanguage();
   const navigate = useNavigate();
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
-    { key: 'nav.home', href: '/' },
-    { key: 'nav.prayerTimes', href: '/#prayer-times' },
-    { key: 'nav.learnQuran', href: '/learn-quran' },
-    { key: 'nav.services', href: '/#services' },
-    { key: 'nav.about', href: '/#about' },
+    { key: 'nav.home', href: '/', hash: '' },
+    { key: 'nav.prayerTimes', href: '/', hash: 'prayer-times' },
+    { key: 'nav.learnQuran', href: '/learn-quran', hash: '' },
+    { key: 'nav.services', href: '/', hash: 'services' },
+    { key: 'nav.about', href: '/', hash: 'about' },
   ];
+
+  const handleNavClick = (e: React.MouseEvent, href: string, hash: string) => {
+    e.preventDefault();
+    
+    if (hash) {
+      // If we're already on the home page, just scroll to the section
+      if (location.pathname === '/') {
+        const element = document.getElementById(hash);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      } else {
+        // Navigate to home page first, then scroll after a short delay
+        navigate('/');
+        setTimeout(() => {
+          const element = document.getElementById(hash);
+          if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+          }
+        }, 100);
+      }
+    } else {
+      navigate(href);
+    }
+  };
 
   return (
     <header className="sticky top-[44px] z-40 bg-card/95 backdrop-blur-md border-b border-border shadow-sm">
@@ -42,13 +68,14 @@ export function Header() {
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-1">
             {navItems.map((item) => (
-              <Link
+              <a
                 key={item.key}
-                to={item.href}
-                className="px-4 py-2 text-sm font-medium text-foreground/80 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors link-underline"
+                href={item.hash ? `/#${item.hash}` : item.href}
+                onClick={(e) => handleNavClick(e, item.href, item.hash)}
+                className="px-4 py-2 text-sm font-medium text-foreground/80 hover:text-primary hover:bg-primary/5 rounded-lg transition-colors link-underline cursor-pointer"
               >
                 {t(item.key)}
-              </Link>
+              </a>
             ))}
           </nav>
 
@@ -87,14 +114,17 @@ export function Header() {
                 {/* Mobile Nav */}
                 <nav className="flex flex-col gap-1 flex-1">
                   {navItems.map((item) => (
-                    <Link
+                    <a
                       key={item.key}
-                      to={item.href}
-                      onClick={() => setIsOpen(false)}
-                      className="px-4 py-3 text-base font-medium text-foreground hover:bg-primary/10 rounded-lg transition-colors"
+                      href={item.hash ? `/#${item.hash}` : item.href}
+                      onClick={(e) => {
+                        handleNavClick(e, item.href, item.hash);
+                        setIsOpen(false);
+                      }}
+                      className="px-4 py-3 text-base font-medium text-foreground hover:bg-primary/10 rounded-lg transition-colors cursor-pointer"
                     >
                       {t(item.key)}
-                    </Link>
+                    </a>
                   ))}
                 </nav>
 
