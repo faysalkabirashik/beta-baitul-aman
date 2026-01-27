@@ -1,1 +1,4 @@
 project_id = "aeluvoyrqvgbzkkhybiv"
+
+[functions.submit-to-sheets]
+verify_jwt = false

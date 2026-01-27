@@ -62,32 +62,57 @@ export function RegistrationModal({ isOpen, onClose, onLoginClick }: Registratio
     // Use phone as email if no email provided
     const emailToUse = formData.email || `${formData.phone}@baitulaman.local`;
 
-    const { error } = await supabase.auth.signUp({
-      email: emailToUse,
-      password: formData.password,
-      options: {
-        emailRedirectTo: `${window.location.origin}/`,
-        data: {
-          full_name: formData.name,
-          phone: formData.phone,
-          age: formData.age,
+    try {
+      // First, submit to Google Sheets
+      const { error: sheetsError } = await supabase.functions.invoke('submit-to-sheets', {
+        body: {
+          formType: 'registration',
+          data: {
+            name: formData.name,
+            phone: formData.phone,
+            email: formData.email,
+            age: formData.age,
+          },
         },
-      },
-    });
+      });
 
-    setIsLoading(false);
-
-    if (error) {
-      if (error.message.includes('already registered')) {
-        toast.error('এই ফোন নম্বর/ইমেইল দিয়ে ইতিমধ্যে নিবন্ধন করা হয়েছে');
-      } else {
-        toast.error(error.message);
+      if (sheetsError) {
+        console.error('Sheets submission error:', sheetsError);
+        // Continue with auth signup even if sheets fails
       }
-      return;
-    }
 
-    setIsSuccess(true);
-    toast.success('সফলভাবে নিবন্ধন হয়েছে!');
+      // Then, sign up the user
+      const { error } = await supabase.auth.signUp({
+        email: emailToUse,
+        password: formData.password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/`,
+          data: {
+            full_name: formData.name,
+            phone: formData.phone,
+            age: formData.age,
+          },
+        },
+      });
+
+      setIsLoading(false);
+
+      if (error) {
+        if (error.message.includes('already registered')) {
+          toast.error('এই ফোন নম্বর/ইমেইল দিয়ে ইতিমধ্যে নিবন্ধন করা হয়েছে');
+        } else {
+          toast.error(error.message);
+        }
+        return;
+      }
+
+      setIsSuccess(true);
+      toast.success('সফলভাবে নিবন্ধন হয়েছে!');
+    } catch (err) {
+      console.error('Registration error:', err);
+      toast.error('নিবন্ধন করতে সমস্যা হয়েছে।');
+      setIsLoading(false);
+    }
     
     setTimeout(() => {
       onClose();
