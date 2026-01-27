@@ -30,7 +30,7 @@ export function CourseInfoSection() {
         <div className="flex flex-col items-center p-4 bg-background/50 rounded-lg">
           <Clock className="w-5 h-5 text-primary mb-2" />
           <span className="text-xs text-muted-foreground">সময়কাল</span>
-          <span className="font-semibold text-foreground text-center bengali-text">৯ জানুয়ারি - ২৯ ফেব্রুয়ারি'২৬</span>
+          <span className="font-semibold text-foreground text-center bengali-text">৯ জানুয়ারি থেকে ২৯ জানুয়ারি</span>
         </div>
         <div className="flex flex-col items-center p-4 bg-background/50 rounded-lg">
           <Clock className="w-5 h-5 text-primary mb-2" />

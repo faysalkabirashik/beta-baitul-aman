@@ -43,9 +43,6 @@ export function VideoPlayer({ lecture, lectureNumber }: VideoPlayerProps) {
             className="w-full h-full"
           />
         </div>
-        <div className="p-4 border-t border-border">
-          <p className="text-muted-foreground bengali-text">{lecture.description}</p>
-        </div>
       </CardContent>
     </Card>
   );
