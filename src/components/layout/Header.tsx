@@ -24,6 +24,19 @@ export function Header() {
   const handleNavClick = (e: React.MouseEvent, href: string, hash: string) => {
     e.preventDefault();
     
+    // Home link - always scroll to top of homepage
+    if (href === '/' && !hash) {
+      if (location.pathname === '/') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        navigate('/');
+        setTimeout(() => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }, 100);
+      }
+      return;
+    }
+    
     if (hash) {
       // If we're already on the home page, just scroll to the section
       if (location.pathname === '/') {

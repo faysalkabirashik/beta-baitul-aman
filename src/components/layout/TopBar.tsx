@@ -1,4 +1,5 @@
 import { useFloatingClock } from '@/hooks/useFloatingClock';
+import { useDateFormats } from '@/hooks/useDateFormats';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Globe } from 'lucide-react';
@@ -9,15 +10,18 @@ interface TopBarProps {
 
 export function TopBar({ showDockedClock = false }: TopBarProps) {
   const clock = useFloatingClock();
+  const dateFormats = useDateFormats();
   const { language, toggleLanguage } = useLanguage();
 
   return (
     <div className="sticky top-0 z-50 bg-header-bar text-header-bar-foreground">
       <div className="container mx-auto px-4 py-2">
         <div className="flex items-center justify-between text-sm">
-          {/* Left: Date with Hijri */}
+          {/* Left: Date with Hijri + Bengali Calendar */}
           <div className="flex items-center gap-2 flex-1">
-            <span className="font-medium truncate">{clock.dateWithHijri}</span>
+            <span className="font-medium truncate text-xs md:text-sm">
+              {dateFormats.loading ? clock.dateWithHijri : dateFormats.fullTopBarDate}
+            </span>
           </div>
 
           {/* Center: Docked Clock (animated) */}

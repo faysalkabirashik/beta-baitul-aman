@@ -1,12 +1,14 @@
 import { motion } from 'framer-motion';
-import { useLanguage, toBengaliNumber } from '@/contexts/LanguageContext';
+import { useLanguage, toBengaliNumber, getBengaliDayName } from '@/contexts/LanguageContext';
 import { usePrayerTimes } from '@/hooks/usePrayerTimes';
+import { useDateFormats } from '@/hooks/useDateFormats';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Clock, Sun, Moon, Loader2, Sunrise, Sunset } from 'lucide-react';
 
 export function PrayerTimesSection() {
   const { t, language } = useLanguage();
   const { prayers, nextPrayer, currentPrayer, sehriTime, iftarTime, hijriDate, loading, error } = usePrayerTimes();
+  const dateFormats = useDateFormats();
 
   const formatTime = (time: string) => {
     if (time === '-' || !time) return '-';
@@ -29,6 +31,9 @@ export function PrayerTimesSection() {
     );
   }
 
+  const today = new Date();
+  const dayName = getBengaliDayName(today);
+
   return (
     <section id="prayer-times" className="py-16 bg-secondary/30">
       <div className="container mx-auto px-4">
@@ -41,7 +46,12 @@ export function PrayerTimesSection() {
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
             {t('prayer.title')}
           </h2>
-          <p className="text-muted-foreground">{hijriDate}</p>
+          {/* Date line: Hijri | International | Bengali Calendar */}
+          <p className="text-muted-foreground text-sm md:text-base">
+            {dateFormats.loading ? hijriDate : dateFormats.fullPrayerDate}
+          </p>
+          {/* Day name on separate line */}
+          <p className="text-primary font-semibold mt-1">{dayName}</p>
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 max-w-7xl mx-auto">
