@@ -18,8 +18,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        bengali: ['"Hind Siliguri"', 'sans-serif'],
-        sans: ['"Hind Siliguri"', 'system-ui', 'sans-serif'],
+        bengali: ['"Noto Sans Bengali"', 'sans-serif'],
+        sans: ['"Noto Sans Bengali"', 'system-ui', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
