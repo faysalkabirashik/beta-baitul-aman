@@ -220,6 +220,137 @@ export function getBengaliMonthName(date: Date): string {
   return months[date.getMonth()];
 }
 
+// Get Bengali calendar month name (Bangla calendar)
+export function getBengaliCalendarMonthName(month: number): string {
+  const bengaliMonths = ['বৈশাখ', 'জ্যৈষ্ঠ', 'আষাঢ়', 'শ্রাবণ', 'ভাদ্র', 'আশ্বিন',
+                         'কার্তিক', 'অগ্রহায়ণ', 'পৌষ', 'মাঘ', 'ফাল্গুন', 'চৈত্র'];
+  return bengaliMonths[month];
+}
+
+// Convert Gregorian date to Bengali calendar date (approximate)
+export function toBengaliCalendarDate(date: Date): { day: number; month: string; year: number } {
+  // Bengali calendar year starts on April 14/15
+  // This is an approximation - for precise calculation, use a library
+  const year = date.getFullYear();
+  const month = date.getMonth(); // 0-11
+  const day = date.getDate();
+  
+  // Bengali year calculation
+  let bengaliYear = year - 593;
+  
+  // Month mapping (approximate)
+  // Poush (পৌষ) = mid-Dec to mid-Jan
+  // Magh (মাঘ) = mid-Jan to mid-Feb
+  // Falgun (ফাল্গুন) = mid-Feb to mid-Mar
+  let bengaliMonth: number;
+  let bengaliDay: number;
+  
+  if (month === 0) { // January
+    if (day < 14) {
+      bengaliMonth = 8; // Poush
+      bengaliDay = day + 17;
+    } else {
+      bengaliMonth = 9; // Magh
+      bengaliDay = day - 13;
+    }
+  } else if (month === 1) { // February
+    if (day < 13) {
+      bengaliMonth = 9; // Magh
+      bengaliDay = day + 18;
+    } else {
+      bengaliMonth = 10; // Falgun
+      bengaliDay = day - 12;
+    }
+  } else if (month === 2) { // March
+    if (day < 15) {
+      bengaliMonth = 10; // Falgun
+      bengaliDay = day + 16;
+    } else {
+      bengaliMonth = 11; // Chaitra
+      bengaliDay = day - 14;
+    }
+  } else if (month === 3) { // April
+    if (day < 14) {
+      bengaliMonth = 11; // Chaitra
+      bengaliDay = day + 17;
+    } else {
+      bengaliMonth = 0; // Baishakh
+      bengaliDay = day - 13;
+      bengaliYear++;
+    }
+  } else if (month === 4) { // May
+    if (day < 15) {
+      bengaliMonth = 0; // Baishakh
+      bengaliDay = day + 17;
+    } else {
+      bengaliMonth = 1; // Jyeshtha
+      bengaliDay = day - 14;
+    }
+  } else if (month === 5) { // June
+    if (day < 15) {
+      bengaliMonth = 1; // Jyeshtha
+      bengaliDay = day + 17;
+    } else {
+      bengaliMonth = 2; // Ashadh
+      bengaliDay = day - 14;
+    }
+  } else if (month === 6) { // July
+    if (day < 16) {
+      bengaliMonth = 2; // Ashadh
+      bengaliDay = day + 16;
+    } else {
+      bengaliMonth = 3; // Shraban
+      bengaliDay = day - 15;
+    }
+  } else if (month === 7) { // August
+    if (day < 16) {
+      bengaliMonth = 3; // Shraban
+      bengaliDay = day + 16;
+    } else {
+      bengaliMonth = 4; // Bhadra
+      bengaliDay = day - 15;
+    }
+  } else if (month === 8) { // September
+    if (day < 16) {
+      bengaliMonth = 4; // Bhadra
+      bengaliDay = day + 16;
+    } else {
+      bengaliMonth = 5; // Ashwin
+      bengaliDay = day - 15;
+    }
+  } else if (month === 9) { // October
+    if (day < 17) {
+      bengaliMonth = 5; // Ashwin
+      bengaliDay = day + 15;
+    } else {
+      bengaliMonth = 6; // Kartik
+      bengaliDay = day - 16;
+    }
+  } else if (month === 10) { // November
+    if (day < 16) {
+      bengaliMonth = 6; // Kartik
+      bengaliDay = day + 15;
+    } else {
+      bengaliMonth = 7; // Agrahayan
+      bengaliDay = day - 15;
+    }
+  } else { // December
+    if (day < 16) {
+      bengaliMonth = 7; // Agrahayan
+      bengaliDay = day + 15;
+    } else {
+      bengaliMonth = 8; // Poush
+      bengaliDay = day - 15;
+    }
+  }
+  
+  return {
+    day: bengaliDay,
+    month: getBengaliCalendarMonthName(bengaliMonth),
+    year: bengaliYear
+  };
+}
+
 // Format date in Bengali
 export function formatBengaliDate(date: Date): string {
   const day = getBengaliDayName(date);

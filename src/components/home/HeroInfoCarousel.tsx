@@ -93,13 +93,13 @@ export function HeroInfoCarousel() {
 
   return (
     <div 
-      className="relative w-full max-w-2xl mx-auto"
+      className="relative w-full max-w-2xl mx-auto px-2"
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
       {/* Carousel Container */}
-      <div className="relative h-[140px] md:h-[120px] overflow-hidden rounded-xl bg-white/10 backdrop-blur-md border border-white/20 cursor-pointer hover:bg-white/15 transition-colors">
+      <div className="relative min-h-[160px] md:min-h-[140px] overflow-hidden rounded-xl bg-white/10 backdrop-blur-md border border-white/20 cursor-pointer hover:bg-white/15 transition-colors">
         <AnimatePresence mode="wait">
           <motion.div
             key={slides[currentSlide].id}
@@ -107,11 +107,11 @@ export function HeroInfoCarousel() {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -50 }}
             transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="absolute inset-0 p-4 flex flex-col"
+            className="p-4 md:p-5 flex flex-col"
           >
             {/* Header */}
-            <div className="flex items-center gap-2 mb-2">
-              <div className="w-8 h-8 rounded-full bg-golden/20 flex items-center justify-center text-golden">
+            <div className="flex items-center gap-2 mb-3">
+              <div className="w-8 h-8 flex-shrink-0 rounded-full bg-golden/20 flex items-center justify-center text-golden">
                 {slides[currentSlide].icon}
               </div>
               <h3 className="text-sm font-semibold text-golden">
@@ -120,17 +120,17 @@ export function HeroInfoCarousel() {
             </div>
 
             {/* Content */}
-            <div className="flex-1 flex flex-col justify-center">
+            <div className="flex-1 flex flex-col justify-center overflow-hidden px-8">
               {slides[currentSlide].content.arabic && (
-                <p className="text-lg md:text-xl font-arabic text-right text-white mb-1" dir="rtl">
+                <p className="text-base md:text-xl font-arabic text-right text-white mb-2 leading-relaxed" dir="rtl">
                   {slides[currentSlide].content.arabic}
                 </p>
               )}
-              <p className="text-sm text-white/90 bengali-text line-clamp-2">
+              <p className="text-sm md:text-base text-white/90 bengali-text leading-relaxed">
                 {slides[currentSlide].content.bangla}
               </p>
               {slides[currentSlide].content.reference && (
-                <p className="text-xs text-white/60 mt-1">
+                <p className="text-xs text-white/60 mt-2">
                   — {slides[currentSlide].content.reference}
                 </p>
               )}
@@ -141,13 +141,13 @@ export function HeroInfoCarousel() {
         {/* Navigation Arrows */}
         <button
           onClick={prevSlide}
-          className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors"
+          className="absolute left-1 md:left-2 top-1/2 -translate-y-1/2 w-7 h-7 md:w-8 md:h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors z-10"
         >
           <ChevronLeft className="w-4 h-4" />
         </button>
         <button
           onClick={nextSlide}
-          className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors"
+          className="absolute right-1 md:right-2 top-1/2 -translate-y-1/2 w-7 h-7 md:w-8 md:h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors z-10"
         >
           <ChevronRight className="w-4 h-4" />
         </button>

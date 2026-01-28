@@ -63,15 +63,15 @@ export function AboutSection() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <Card className="border-primary/20">
                 <CardContent className="p-4 flex items-start gap-3">
-                  <MapPin className="w-5 h-5 text-primary mt-0.5" />
+                  <MapPin className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
                   <div>
                     <h4 className="font-medium text-foreground text-sm">
                       {language === 'bn' ? 'ঠিকানা' : 'Address'}
                     </h4>
                     <p className="text-muted-foreground text-xs">
                       {language === 'bn' 
-                        ? 'বাইতুল আমান মসজিদ, ঢাকা'
-                        : 'Baitul Aman Mosque, Dhaka'
+                        ? 'বাইতুল আমান মসজিদ, ধানমন্ডি, রোড ৭, ঢাকা'
+                        : 'Baitul Aman Mosque, Dhanmondi, Road 7, Dhaka'
                       }
                     </p>
                   </div>
@@ -80,7 +80,7 @@ export function AboutSection() {
 
               <Card className="border-primary/20">
                 <CardContent className="p-4 flex items-start gap-3">
-                  <Clock className="w-5 h-5 text-primary mt-0.5" />
+                  <Clock className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
                   <div>
                     <h4 className="font-medium text-foreground text-sm">
                       {language === 'bn' ? 'সময়' : 'Timing'}
@@ -97,12 +97,12 @@ export function AboutSection() {
 
               <Card className="border-primary/20">
                 <CardContent className="p-4 flex items-start gap-3">
-                  <Phone className="w-5 h-5 text-primary mt-0.5" />
+                  <Phone className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
                   <div>
                     <h4 className="font-medium text-foreground text-sm">
                       {language === 'bn' ? 'ফোন' : 'Phone'}
                     </h4>
-                    <p className="text-muted-foreground text-xs">+880 1XXX-XXXXXX</p>
+                    <p className="text-muted-foreground text-xs">০১৫৫২-৬৩২৪৫১</p>
                   </div>
                 </CardContent>
               </Card>

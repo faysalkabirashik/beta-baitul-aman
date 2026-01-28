@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { MapPin, Phone, Clock, Mail, ExternalLink } from 'lucide-react';
+import logoImage from '@/assets/logo-baitul-aman.png';
 
 export function Footer() {
   const { t } = useLanguage();
@@ -13,9 +14,11 @@ export function Footer() {
           {/* Mosque Info */}
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-14 h-14 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold text-2xl">
-                بأ
-              </div>
+              <img
+                src={logoImage}
+                alt="বাইতুল আমান মসজিদ"
+                className="w-14 h-14 rounded-full object-contain"
+              />
               <div>
                 <h3 className="text-lg font-bold text-white">
                   {t('footer.mosqueName')}
