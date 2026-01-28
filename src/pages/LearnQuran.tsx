@@ -20,7 +20,7 @@ import baitulAmanNight from '@/assets/baitul-aman-night.png';
 const lectures = [
   {
     id: 1,
-    title: 'কুরআন ক্লাস - ৩ (১১ জানুয়ারি ২০২৬)',
+    title: 'কুরআন ক্লাস - ৩',
     videoUrl: 'https://www.youtube.com/watch?v=Jf83GEAr2Bs',
     description: 'তাজবীদের মূল নিয়মাবলী ও মাখরাজ শিক্ষা।',
     date: '১১ জানুয়ারি ২০২৬',
@@ -28,7 +28,7 @@ const lectures = [
   },
   {
     id: 2,
-    title: 'কুরআন ক্লাস - ৪ (১২ জানুয়ারি ২০২৬)',
+    title: 'কুরআন ক্লাস - ৪',
     videoUrl: 'https://www.youtube.com/watch?v=nFcmV_keW-Y',
     description: 'নূন সাকিন ও তানবীনের বিধান।',
     date: '১২ জানুয়ারি ২০২৬',
@@ -39,6 +39,7 @@ const lectures = [
     title: 'কুরআন ক্লাস - ৭',
     videoUrl: 'https://www.youtube.com/watch?v=SvCpvzApr64',
     description: 'কুরআন শিক্ষা – ক্লাস ৭',
+    date: '১৫ জানুয়ারি ২০২৬',
     quiz: [],
   },
   {
@@ -46,6 +47,7 @@ const lectures = [
     title: 'কুরআন ক্লাস - ৮',
     videoUrl: 'https://www.youtube.com/watch?v=1XBJ-4iKn1w',
     description: 'কুরআন শিক্ষা – ক্লাস ৮',
+    date: '১৬ জানুয়ারি ২০২৬',
     quiz: [],
   },
   {
@@ -53,6 +55,7 @@ const lectures = [
     title: 'কুরআন ক্লাস - ৯',
     videoUrl: 'https://www.youtube.com/watch?v=2gYxGOXCufM',
     description: 'কুরআন শিক্ষা – ক্লাস ৯',
+    date: '১৭ জানুয়ারি ২০২৬',
     quiz: [],
   },
   {
@@ -60,11 +63,12 @@ const lectures = [
     title: 'কুরআন ক্লাস - ১০',
     videoUrl: 'https://www.youtube.com/watch?v=3tGxc3ogt-4',
     description: 'কুরআন শিক্ষা – ক্লাস ১০',
+    date: '১৮ জানুয়ারি ২০২৬',
     quiz: [],
   },
   {
     id: 7,
-    title: 'কুরআন ক্লাস - ১১ (১৯ জানুয়ারি ২০২৬)',
+    title: 'কুরআন ক্লাস - ১১',
     videoUrl: 'https://www.youtube.com/watch?v=YpzEXiK3w5E',
     description: 'সূরা আল-ফাতিহার সঠিক তিলাওয়াত শিক্ষা।',
     date: '১৯ জানুয়ারি ২০২৬',
@@ -75,6 +79,7 @@ const lectures = [
     title: 'কুরআন ক্লাস - ১২',
     videoUrl: 'https://www.youtube.com/watch?v=O8Skcq2YM7U',
     description: 'কুরআন শিক্ষা – ক্লাস ১২',
+    date: '২০ জানুয়ারি ২০২৬',
     quiz: [],
   },
   {
@@ -82,6 +87,7 @@ const lectures = [
     title: 'কুরআন ক্লাস - ১৩',
     videoUrl: 'https://www.youtube.com/watch?v=6An7rZElstg',
     description: 'কুরআন শিক্ষা – ক্লাস ১৩',
+    date: '২১ জানুয়ারি ২০২৬',
     quiz: [],
   },
   {
@@ -89,37 +95,13 @@ const lectures = [
     title: 'কুরআন ক্লাস - ১৪',
     videoUrl: 'https://www.youtube.com/watch?v=A41KlidKBSw',
     description: 'কুরআন শিক্ষা – ক্লাস ১৪',
+    date: '২২ জানুয়ারি ২০২৬',
     quiz: [],
   },
 ];
 
 
-// const lectures = [
-//   {
-//     id: 1,
-//     title: 'কুরআন ক্লাস - ৩ (১১ জানুয়ারি ২০২৬)',
-//     videoUrl: 'https://www.youtube.com/watch?v=Jf83GEAr2Bs',
-//     description: 'তাজবীদের মূল নিয়মাবলী ও মাখরাজ শিক্ষা।',
-//     date: '১১ জানুয়ারি ২০২৬',
-//     quiz: [],
-//   },
-//   {
-//     id: 2,
-//     title: 'কুরআন ক্লাস - ৪ (১২ জানুয়ারি ২০২৬)',
-//     videoUrl: 'https://www.youtube.com/watch?v=nFcmV_keW-Y',
-//     description: 'নূন সাকিন ও তানবীনের বিধান।',
-//     date: '১২ জানুয়ারি ২০২৬',
-//     quiz: [],
-//   },
-//   {
-//     id: 3,
-//     title: 'কুরআন ক্লাস - ১১ (১৯ জানুয়ারি ২০২৬)',
-//     videoUrl: 'https://www.youtube.com/watch?v=YpzEXiK3w5E',
-//     description: 'সূরা আল-ফাতিহার সঠিক তিলাওয়াত শিক্ষা।',
-//     date: '১৯ জানুয়ারি ২০২৬',
-//     quiz: [],
-//   },
-// ];
+
 
 export default function LearnQuran() {
   const { t, language } = useLanguage();

@@ -2,12 +2,16 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useLanguage, toBengaliNumber } from '@/contexts/LanguageContext';
 import { PlayCircle } from 'lucide-react';
 
+
+
 interface Lecture {
   id: number;
   title: string;
   videoUrl: string;
   description: string;
+  date?: string;
 }
+
 
 interface VideoPlayerProps {
   lecture: Lecture;
@@ -28,10 +32,19 @@ export function VideoPlayer({ lecture, lectureNumber }: VideoPlayerProps) {
   return (
     <Card className="card-elevated overflow-hidden">
       <CardHeader className="bg-primary text-primary-foreground py-4">
+        {/* <CardTitle className="flex items-center gap-3 text-lg"> */}
+        {/* <PlayCircle className="w-6 h-6" /> */}
+        {/* {t('lms.lecture')} {language === 'bn' ? toBengaliNumber(lectureNumber) : lectureNumber}: {lecture.title} */}
+        {/* {t('lms.lecture')} {language === 'bn' ? toBengaliNumber(lectureNumber) : lectureNumber}: {lecture.title} */}
+        {/* {lecture.date && ` (${lecture.date})`} */}
+        {/* </CardTitle> */}
+
         <CardTitle className="flex items-center gap-3 text-lg">
           <PlayCircle className="w-6 h-6" />
           {t('lms.lecture')} {language === 'bn' ? toBengaliNumber(lectureNumber) : lectureNumber}: {lecture.title}
+          {lecture.date && ` (${lecture.date})`}
         </CardTitle>
+
       </CardHeader>
       <CardContent className="p-0">
         <div className="aspect-video bg-black">

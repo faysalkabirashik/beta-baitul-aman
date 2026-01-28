@@ -42,13 +42,12 @@ export function LecturePlaylist({ lectures, currentLecture, onSelectLecture }: L
                   whileHover={{ scale: 1.01 }}
                   whileTap={{ scale: 0.99 }}
                   onClick={() => onSelectLecture(index)}
-                  className={`w-full text-left p-3 rounded-lg transition-all duration-200 ${
-                    isActive
+                  className={`w-full text-left p-3 rounded-lg transition-all duration-200 ${isActive
                       ? 'bg-primary text-primary-foreground'
                       : isCompleted
-                      ? 'bg-primary/10 hover:bg-primary/20'
-                      : 'bg-muted/50 hover:bg-muted'
-                  }`}
+                        ? 'bg-primary/10 hover:bg-primary/20'
+                        : 'bg-muted/50 hover:bg-muted'
+                    }`}
                 >
                   <div className="flex items-start gap-3">
                     {/* Icon */}
@@ -62,9 +61,13 @@ export function LecturePlaylist({ lectures, currentLecture, onSelectLecture }: L
 
                     {/* Content */}
                     <div className="flex-1 min-w-0">
-                      <p className={`text-sm font-medium truncate ${isActive ? 'text-primary-foreground' : 'text-foreground'}`}>
+                      {/* <p className={`text-sm font-medium truncate ${isActive ? 'text-primary-foreground' : 'text-foreground'}`}>
                         {language === 'bn' ? toBengaliNumber(index + 1) : index + 1}. {lecture.title}
+                      </p> */}
+                      <p className={`text-sm font-medium truncate ${isActive ? 'text-primary-foreground' : 'text-foreground'}`}>
+                        {lecture.title}
                       </p>
+
                       {lecture.date && (
                         <p className={`text-xs mt-0.5 ${isActive ? 'text-primary-foreground/70' : 'text-muted-foreground'}`}>
                           {lecture.date}
