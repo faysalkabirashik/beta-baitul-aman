@@ -69,12 +69,16 @@ export function useDateFormats(): DateFormats {
       try {
         const today = new Date();
         const dateStr = `${today.getDate()}-${today.getMonth() + 1}-${today.getFullYear()}`;
-        const response = await fetch(`https://api.aladhan.com/v1/gpiToH/${dateStr}`);
+        
+        // Use the timings endpoint which includes Hijri data and is more reliable
+        const response = await fetch(
+          `https://api.aladhan.com/v1/timings/${dateStr}?latitude=23.7442&longitude=90.3788&method=1`
+        );
         const json = await response.json();
         
         let hijriFormatted = '';
-        if (json.code === 200 && json.data) {
-          const hijri = json.data.hijri;
+        if (json.code === 200 && json.data?.date?.hijri) {
+          const hijri = json.data.date.hijri;
           const day = parseInt(hijri.day, 10);
           const monthEn = hijri.month.en;
           const year = hijri.year;
@@ -96,12 +100,12 @@ export function useDateFormats(): DateFormats {
         // Day name
         const dayName = getBengaliDayName(today);
         
-        // Format for top bar: ৭ই শাবান, ১৪৪৭ হিজরি । সোমবার, ১২ মাঘ, ১৪৩২ বঙ্গাব্দ
+        // Format for top bar: ৯ই শাবান, ১৪৪৭ হিজরি । সোমবার, ১২ মাঘ, ১৪৩২ বঙ্গাব্দ
         const fullTopBar = hijriFormatted 
           ? `${hijriFormatted} । ${dayName}, ${toBengaliNumber(bengaliCal.day)} ${bengaliCal.month}, ${toBengaliNumber(bengaliCal.year)} বঙ্গাব্দ`
           : `${dayName}, ${toBengaliNumber(bengaliCal.day)} ${bengaliCal.month}, ${toBengaliNumber(bengaliCal.year)} বঙ্গাব্দ`;
         
-        // Format for prayer section: ৭ই শাবান, ১৪৪৭ হিজরি । ২৬ জানুয়ারি ২০২৬ । ১২ মাঘ, ১৪৩২ বঙ্গাব্দ
+        // Format for prayer section: ৯ই শাবান, ১৪৪৭ হিজরি । ২৬ জানুয়ারি ২০২৬ । ১২ মাঘ, ১৪৩২ বঙ্গাব্দ
         const fullPrayer = hijriFormatted
           ? `${hijriFormatted} । ${intlDate} । ${toBengaliNumber(bengaliCal.day)} ${bengaliCal.month}, ${toBengaliNumber(bengaliCal.year)} বঙ্গাব্দ`
           : `${intlDate} । ${toBengaliNumber(bengaliCal.day)} ${bengaliCal.month}, ${toBengaliNumber(bengaliCal.year)} বঙ্গাব্দ`;

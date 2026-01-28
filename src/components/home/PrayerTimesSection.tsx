@@ -5,19 +5,68 @@ import { useDateFormats } from '@/hooks/useDateFormats';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Clock, Sun, Moon, Loader2, Sunrise, Sunset } from 'lucide-react';
 
+// Convert 24h to 12h format in Bengali
+function to12HourFormat(time: string, language: string): string {
+  if (time === '-' || !time) return '-';
+  
+  const [hours, minutes] = time.split(':').map(Number);
+  const period = hours >= 12 ? (language === 'bn' ? 'PM' : 'PM') : (language === 'bn' ? 'AM' : 'AM');
+  const hour12 = hours % 12 || 12;
+  
+  if (language === 'bn') {
+    return `${toBengaliNumber(hour12)}:${toBengaliNumber(String(minutes).padStart(2, '0'))}`;
+  }
+  return `${hour12}:${String(minutes).padStart(2, '0')}`;
+}
+
+// Check if a given time has passed
+function hasTimePassed(timeStr: string): boolean {
+  if (timeStr === '-' || !timeStr) return false;
+  
+  const now = new Date();
+  const [hours, minutes] = timeStr.split(':').map(Number);
+  const currentMinutes = now.getHours() * 60 + now.getMinutes();
+  const targetMinutes = hours * 60 + minutes;
+  
+  return currentMinutes >= targetMinutes;
+}
+
 export function PrayerTimesSection() {
   const { t, language } = useLanguage();
   const { prayers, nextPrayer, currentPrayer, sehriTime, iftarTime, hijriDate, loading, error } = usePrayerTimes();
   const dateFormats = useDateFormats();
 
   const formatTime = (time: string) => {
-    if (time === '-' || !time) return '-';
-    if (language === 'bn') {
-      const [hours, minutes] = time.split(':');
-      return `${toBengaliNumber(hours)}:${toBengaliNumber(minutes)}`;
-    }
-    return time;
+    return to12HourFormat(time, language);
   };
+
+  // Get Iqamah times
+  const iqamahTimes: Record<string, string> = {
+    'ফজর': '06:10',
+    'যোহর': '13:30',
+    'আসর': '16:30',
+    'মাগরিব': '17:43',
+    'ইশা': '19:45',
+  };
+
+  // Get current prayer's iqamah if not passed
+  const getCurrentIqamah = (): string | null => {
+    if (!currentPrayer) return null;
+    const iqamah = iqamahTimes[currentPrayer.name];
+    if (iqamah && !hasTimePassed(iqamah)) {
+      return iqamah;
+    }
+    return null;
+  };
+
+  // Get next prayer's iqamah
+  const getNextIqamah = (): string | null => {
+    if (!nextPrayer) return null;
+    return iqamahTimes[nextPrayer.name] || null;
+  };
+
+  const currentIqamah = getCurrentIqamah();
+  const nextIqamah = getNextIqamah();
 
   if (loading) {
     return (
@@ -70,25 +119,35 @@ export function PrayerTimesSection() {
                     <p className="text-xs uppercase tracking-wider opacity-70 mb-1">
                       বর্তমান ওয়াক্ত
                     </p>
-                    <h3 className="text-xl font-bold">{currentPrayer.name}</h3>
+                    <h3 className="text-2xl font-bold">{currentPrayer.name}</h3>
+                    {currentIqamah && (
+                      <p className="text-sm mt-1 opacity-90">
+                        ইকামতঃ {formatTime(currentIqamah)}
+                      </p>
+                    )}
                   </div>
                 )}
                 
                 {/* Next Prayer */}
                 {nextPrayer && (
                   <div className="text-center">
-                    <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-3">
-                      <Clock className="w-6 h-6" />
+                    <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-2">
+                      <Clock className="w-5 h-5" />
                     </div>
                     <p className="text-xs uppercase tracking-wider opacity-70 mb-1">
-                      {t('prayer.nextPrayer')}
+                      পরবর্তী নামাজ
                     </p>
-                    <h3 className="text-2xl font-bold mb-1">{nextPrayer.name}</h3>
-                    <p className="text-3xl font-bold text-golden mb-1">
+                    <h3 className="text-xl font-bold text-golden mb-1">{nextPrayer.name}</h3>
+                    <p className="text-2xl font-bold mb-1">
                       {formatTime(nextPrayer.time)}
                     </p>
-                    <p className="text-xs opacity-70">
-                      {t('prayer.timeRemaining')}: {nextPrayer.remaining}
+                    {nextIqamah && (
+                      <p className="text-sm opacity-90">
+                        ইকামতঃ {formatTime(nextIqamah)}
+                      </p>
+                    )}
+                    <p className="text-xs opacity-70 mt-1">
+                      বাকি সময়ঃ {nextPrayer.remaining}
                     </p>
                   </div>
                 )}
@@ -158,7 +217,7 @@ export function PrayerTimesSection() {
                             </td>
                           </tr>
                         ))}
-                        {/* Jummah */}
+                        {/* Jummah - Only show as additional info, not replacing Dhuhr */}
                         <tr className="bg-golden/10">
                           <td className="py-2 px-2">
                             <span className="font-bold text-golden">
