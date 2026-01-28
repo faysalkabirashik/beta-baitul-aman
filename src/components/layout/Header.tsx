@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu, X, LogIn, UserPlus } from 'lucide-react';
 import { motion } from 'framer-motion';
+import logoImage from '@/assets/logo-baitul-aman.png';
 
 export function Header() {
   const { t } = useLanguage();
@@ -51,12 +52,12 @@ export function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3">
-            <motion.div
+            <motion.img
               whileHover={{ scale: 1.05 }}
-              className="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold text-xl"
-            >
-              بأ
-            </motion.div>
+              src={logoImage}
+              alt="বাইতুল আমান মসজিদ"
+              className="w-12 h-12 rounded-full object-contain"
+            />
             <div className="hidden sm:block">
               <h1 className="text-lg font-bold text-foreground leading-tight">
                 {t('footer.mosqueName')}
@@ -102,9 +103,11 @@ export function Header() {
               <div className="flex flex-col h-full py-6">
                 {/* Mobile Logo */}
                 <div className="flex items-center gap-3 mb-8">
-                  <div className="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold text-xl">
-                    بأ
-                  </div>
+                  <img
+                    src={logoImage}
+                    alt="বাইতুল আমান মসজিদ"
+                    className="w-12 h-12 rounded-full object-contain"
+                  />
                   <div>
                     <h2 className="text-lg font-bold">{t('footer.mosqueName')}</h2>
                     <p className="text-xs text-muted-foreground">House of Peace</p>

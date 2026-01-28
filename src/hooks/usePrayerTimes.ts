@@ -79,13 +79,13 @@ export function usePrayerTimes(
         const timings = json.data.timings;
         const hijri = json.data.date.hijri;
 
-        // Manual Iqamah times (can be overridden by admin)
+        // Fixed Iqamah times for Baitul Aman Masjid
         const iqamahTimes: Record<string, string> = {
-          Fajr: addMinutes(timings.Fajr, 20),
-          Dhuhr: addMinutes(timings.Dhuhr, 15),
-          Asr: addMinutes(timings.Asr, 15),
-          Maghrib: addMinutes(timings.Maghrib, 5),
-          Isha: addMinutes(timings.Isha, 15),
+          Fajr: '06:10',
+          Dhuhr: '13:30',
+          Asr: '16:30',
+          Maghrib: '17:43',
+          Isha: '19:45',
         };
 
         const prayers: PrayerTime[] = [
