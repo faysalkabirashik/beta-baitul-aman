@@ -78,14 +78,51 @@ export function RegistrationModal({ isOpen, onClose, onLoginClick }: Registratio
       }
 
       setIsLoading(false);
-      setIsSuccess(true);
-      toast.success('সফলভাবে সাবমিট হয়েছে!');
+      // setIsSuccess(true);
+      // toast.success('সফলভাবে সাবমিট হয়েছে!');
+
+      // ---------------- MONGODB SAVE ----------------
+      // ---------------- MONGODB SAVE ----------------
+      try {
+        const response = await fetch("http://127.0.0.1:5000/api/join", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            phone: formData.phone,
+            email: formData.email,
+            address: formData.address,
+          }),
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          console.error("Server save failed:", result);
+          toast.error("Server-এ তথ্য সংরক্ষণ ব্যর্থ হয়েছে");
+          return;
+        }
+
+        // ✅ SUCCESS ONLY IF MONGODB OK
+        setIsSuccess(true);
+        toast.success("সফলভাবে সাবমিট হয়েছে!");
+
+      } catch (mongoErr) {
+        console.error("Server error:", mongoErr);
+        toast.error("Server সংযোগে সমস্যা হয়েছে");
+      }
+
+      // ------------------------------------------------
+
+
     } catch (err) {
       console.error('Registration error:', err);
       toast.error('তথ্য জমা দিতে সমস্যা হয়েছে।');
       setIsLoading(false);
     }
-    
+
     setTimeout(() => {
       onClose();
       setIsSuccess(false);
