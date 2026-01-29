@@ -3,29 +3,32 @@ import { BookOpen, Clock, MapPin, Phone } from 'lucide-react';
 
 export function CourseInfoSection() {
   return (
-    <section className="mt-14 px-4 md:px-6">
+    <motion.section
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      className="mt-14 max-w-6xl mx-auto p-6 md:p-8
+                 bg-gradient-to-r from-primary/10 to-golden/10
+                 rounded-2xl border border-primary/20"
+    >
       {/* Title */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="text-center mb-10"
-      >
+      <div className="text-center mb-10">
         <BookOpen className="w-12 h-12 text-primary mx-auto mb-4" />
         <h2 className="text-2xl md:text-3xl font-bold text-foreground bengali-text">
           ২১ দিনে, ২১ ঘন্টায়{' '}
           <span className="text-primary">“নূরানী পদ্ধতিতে”</span>{' '}
           পবিত্র কুরআন ও দ্বীন শিক্ষা।
         </h2>
-      </motion.div>
+      </div>
 
       {/* Instructor – MAIN CARD */}
       <motion.div
         initial={{ opacity: 0, y: 16 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ delay: 0.1 }}
-        className="max-w-3xl mx-auto mb-10 p-6 rounded-2xl bg-primary/10 border border-primary/20 text-center bengali-text"
+        className="max-w-3xl mx-auto mb-10 p-6
+                   rounded-xl bg-primary/15 border border-primary/30
+                   text-center bengali-text"
       >
         <p className="text-lg font-semibold text-foreground mb-1">
           প্রশিক্ষক: হযরত মাওলানা ক্বারী মুহাম্মাদ কিফায়াতুল্লাহ
@@ -49,9 +52,9 @@ export function CourseInfoSection() {
         </p>
       </motion.div>
 
-      {/* Supporting Information */}
-      <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-5 mb-10 bengali-text">
-        <div className="p-5 bg-background/70 rounded-xl">
+      {/* Supporting Info */}
+      <div className="grid md:grid-cols-2 gap-6 mb-10 bengali-text">
+        <div className="p-5 bg-background/70 rounded-xl border">
           <h4 className="font-semibold text-primary mb-2">পরিচালনায়</h4>
           <p>
             মো. মনিরুল ইসলাম মিলন<br />
@@ -60,7 +63,7 @@ export function CourseInfoSection() {
           </p>
         </div>
 
-        <div className="p-5 bg-background/70 rounded-xl">
+        <div className="p-5 bg-background/70 rounded-xl border">
           <h4 className="font-semibold text-primary mb-2">
             ভিডিও এডিটিং ও ওয়েব ডিজাইন
           </h4>
@@ -76,7 +79,7 @@ export function CourseInfoSection() {
           </p>
         </div>
 
-        <div className="p-5 bg-background/70 rounded-xl">
+        <div className="p-5 bg-background/70 rounded-xl border">
           <h4 className="font-semibold text-primary mb-2">কৃতজ্ঞতায়</h4>
           <p>
             বাইতুল আমান মসজিদ কমিটি, খতিব, ইমাম,
@@ -84,7 +87,7 @@ export function CourseInfoSection() {
           </p>
         </div>
 
-        <div className="p-5 bg-background/70 rounded-xl">
+        <div className="p-5 bg-background/70 rounded-xl border">
           <h4 className="font-semibold text-primary mb-2">বিশেষ সহযোগিতায়</h4>
           <p>
             ওয়াহিদ উদ্দিন মাহমুদ<br />
@@ -93,42 +96,42 @@ export function CourseInfoSection() {
         </div>
       </div>
 
-      {/* Course Meta – COMPACT STRIP */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-        <div className="flex flex-col items-center p-4 bg-background/60 rounded-lg">
-          <Clock className="w-5 h-5 text-primary mb-2" />
-          <span className="text-xs text-muted-foreground">সময়কাল</span>
-          <span className="font-semibold text-foreground bengali-text text-center">
+      {/* Course Meta – RESTORED CARDS */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+        <div className="p-4 bg-background/80 rounded-lg border">
+          <Clock className="w-5 h-5 text-primary mx-auto mb-2" />
+          <p className="text-xs text-muted-foreground">সময়কাল</p>
+          <p className="font-semibold bengali-text">
             ৯ থেকে ২৯ জানুয়ারি ’২৬
-          </span>
+          </p>
         </div>
 
-        <div className="flex flex-col items-center p-4 bg-background/60 rounded-lg">
-          <Clock className="w-5 h-5 text-primary mb-2" />
-          <span className="text-xs text-muted-foreground">সময়</span>
-          <span className="font-semibold text-foreground bengali-text">
+        <div className="p-4 bg-background/80 rounded-lg border">
+          <Clock className="w-5 h-5 text-primary mx-auto mb-2" />
+          <p className="text-xs text-muted-foreground">সময়</p>
+          <p className="font-semibold bengali-text">
             বাদ এশা (১ ঘণ্টা)
-          </span>
+          </p>
         </div>
 
-        <div className="flex flex-col items-center p-4 bg-background/60 rounded-lg">
-          <MapPin className="w-5 h-5 text-primary mb-2" />
-          <span className="text-xs text-muted-foreground">স্থান</span>
-          <span className="font-semibold text-foreground bengali-text text-center">
+        <div className="p-4 bg-background/80 rounded-lg border">
+          <MapPin className="w-5 h-5 text-primary mx-auto mb-2" />
+          <p className="text-xs text-muted-foreground">স্থান</p>
+          <p className="font-semibold bengali-text">
             বায়তুল আমান মসজিদ<br />
             ধানমন্ডি, রোড ৭, ঢাকা
-          </span>
+          </p>
         </div>
 
-        <div className="flex flex-col items-center p-4 bg-background/60 rounded-lg">
-          <Phone className="w-5 h-5 text-primary mb-2" />
-          <span className="text-xs text-muted-foreground">যোগাযোগ</span>
-          <span className="font-semibold text-foreground text-center" dir="ltr">
+        <div className="p-4 bg-background/80 rounded-lg border">
+          <Phone className="w-5 h-5 text-primary mx-auto mb-2" />
+          <p className="text-xs text-muted-foreground">যোগাযোগ</p>
+          <p className="font-semibold" dir="ltr">
             ০১৭১১-৩৯২৫৯৫<br />
             ০১৭১৪-৬৬৬৭৭৭
-          </span>
+          </p>
         </div>
       </div>
-    </section>
+    </motion.section>
   );
 }
