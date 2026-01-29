@@ -34,6 +34,7 @@ export function RegistrationModal({ isOpen, onClose, onLoginClick }: Registratio
     email: '',
     address: '',
   });
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -84,7 +85,7 @@ export function RegistrationModal({ isOpen, onClose, onLoginClick }: Registratio
       // ---------------- MONGODB SAVE ----------------
       // ---------------- MONGODB SAVE ----------------
       try {
-        const response = await fetch("http://127.0.0.1:5000/api/join", {
+        const response = await fetch(`${API_BASE_URL}/api/join`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -96,6 +97,7 @@ export function RegistrationModal({ isOpen, onClose, onLoginClick }: Registratio
             address: formData.address,
           }),
         });
+
 
         const result = await response.json();
 

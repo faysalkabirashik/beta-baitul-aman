@@ -4,6 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import joinRoutes from "./routes/join.routes.js";
 import orderRoutes from "./routes/order.routes.js";
+import authRoutes from "./routes/auth.routes.js";
 
 dotenv.config();
 
@@ -12,6 +13,7 @@ app.use(cors());
 app.use(express.json());
 app.use("/api/join", joinRoutes);
 app.use("/api/order", orderRoutes);
+app.use("/api/auth", authRoutes);
 
 
 
