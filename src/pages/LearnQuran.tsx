@@ -36,6 +36,22 @@ const lectures = [
   },
   {
     id: 3,
+    title: 'কুরআন ক্লাস - ৫',
+    videoUrl: 'https://www.youtube.com/watch?v=I0J7mVKyMD8',
+    description: 'কুরআন শিক্ষা – ক্লাস ৫',
+    date: '১৩ জানুয়ারি ২০২৬',
+    quiz: [],
+  },
+  {
+    id: 4,
+    title: 'কুরআন ক্লাস - ৬',
+    videoUrl: 'https://www.youtube.com/watch?v=gpHnaQgbwC8',
+    description: 'কুরআন শিক্ষা – ক্লাস ৬',
+    date: '১৪ জানুয়ারি ২০২৬',
+    quiz: [],
+  },
+  {
+    id: 5,
     title: 'কুরআন ক্লাস - ৭',
     videoUrl: 'https://www.youtube.com/watch?v=SvCpvzApr64',
     description: 'কুরআন শিক্ষা – ক্লাস ৭',
@@ -43,7 +59,7 @@ const lectures = [
     quiz: [],
   },
   {
-    id: 4,
+    id: 6,
     title: 'কুরআন ক্লাস - ৮',
     videoUrl: 'https://www.youtube.com/watch?v=1XBJ-4iKn1w',
     description: 'কুরআন শিক্ষা – ক্লাস ৮',
@@ -51,7 +67,7 @@ const lectures = [
     quiz: [],
   },
   {
-    id: 5,
+    id: 7,
     title: 'কুরআন ক্লাস - ৯',
     videoUrl: 'https://www.youtube.com/watch?v=2gYxGOXCufM',
     description: 'কুরআন শিক্ষা – ক্লাস ৯',
@@ -59,7 +75,7 @@ const lectures = [
     quiz: [],
   },
   {
-    id: 6,
+    id: 8,
     title: 'কুরআন ক্লাস - ১০',
     videoUrl: 'https://www.youtube.com/watch?v=3tGxc3ogt-4',
     description: 'কুরআন শিক্ষা – ক্লাস ১০',
@@ -67,7 +83,7 @@ const lectures = [
     quiz: [],
   },
   {
-    id: 7,
+    id: 9,
     title: 'কুরআন ক্লাস - ১১',
     videoUrl: 'https://www.youtube.com/watch?v=YpzEXiK3w5E',
     description: 'সূরা আল-ফাতিহার সঠিক তিলাওয়াত শিক্ষা।',
@@ -75,7 +91,7 @@ const lectures = [
     quiz: [],
   },
   {
-    id: 8,
+    id: 10,
     title: 'কুরআন ক্লাস - ১২',
     videoUrl: 'https://www.youtube.com/watch?v=O8Skcq2YM7U',
     description: 'কুরআন শিক্ষা – ক্লাস ১২',
@@ -83,7 +99,7 @@ const lectures = [
     quiz: [],
   },
   {
-    id: 9,
+    id: 11,
     title: 'কুরআন ক্লাস - ১৩',
     videoUrl: 'https://www.youtube.com/watch?v=6An7rZElstg',
     description: 'কুরআন শিক্ষা – ক্লাস ১৩',
@@ -91,15 +107,22 @@ const lectures = [
     quiz: [],
   },
   {
-    id: 10,
+    id: 12,
     title: 'কুরআন ক্লাস - ১৪',
     videoUrl: 'https://www.youtube.com/watch?v=A41KlidKBSw',
     description: 'কুরআন শিক্ষা – ক্লাস ১৪',
     date: '২২ জানুয়ারি ২০২৬',
     quiz: [],
   },
+  {
+    id: 13,
+    title: 'কুরআন ক্লাস - ১৫',
+    videoUrl: 'https://www.youtube.com/watch?v=DaRmOTWw0gY',
+    description: 'কুরআন শিক্ষা – ক্লাস ১৫',
+    date: '২৩ জানুয়ারি ২০২৬',
+    quiz: [],
+  },
 ];
-
 
 
 
