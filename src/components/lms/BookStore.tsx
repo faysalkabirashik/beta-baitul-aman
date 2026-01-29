@@ -32,10 +32,10 @@ export function BookStore() {
   const { t } = useLanguage();
   const [showForm, setShowForm] = useState(false);
   const [quantity, setQuantity] = useState(1);
-  
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
-  
+
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -85,6 +85,38 @@ export function BookStore() {
           },
         },
       });
+
+      // ---------------- MONGODB SAVE ----------------
+      try {
+        const response = await fetch("http://localhost:5000/api/order", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            phone: formData.phone,
+            address: formData.address,
+
+            bookTitle: mainBook.title,
+            quantity: quantity,
+            totalPrice: totalPrice,
+            orderType: "buy",
+          }),
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          console.error("Server order save failed:", result);
+          toast.error("Server-এ অর্ডার সংরক্ষণ ব্যর্থ হয়েছে");
+        }
+      } catch (mongoErr) {
+        console.error("Server error:", mongoErr);
+        toast.error("Server সংযোগে সমস্যা হয়েছে");
+      }
+      // ------------------------------------------------
+
 
       if (error) {
         console.error('Order submission error:', error);
@@ -207,7 +239,7 @@ export function BookStore() {
                   {showForm ? (
                     <div>
                       <h4 className="text-lg font-semibold mb-4">অর্ডার ফর্ম</h4>
-                      
+
                       {/* Selected Book Summary */}
                       <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg mb-4">
                         <img
