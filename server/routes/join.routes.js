@@ -1,5 +1,5 @@
 import express from "express";
-import Join from "../models/Join.js";
+import { supabase } from "../index.js";
 
 const router = express.Router();
 
@@ -8,12 +8,17 @@ const router = express.Router();
  */
 router.post("/", async (req, res) => {
   try {
-    const join = new Join(req.body);
-    await join.save();
+    const { name, phone, email, address } = req.body;
+    
+    const { error } = await supabase
+      .from("joins")
+      .insert([{ name, phone, email, address }]);
+
+    if (error) throw error;
 
     res.status(201).json({
       success: true,
-      message: "Join data saved to MongoDB",
+      message: "Join data saved to Supabase",
     });
   } catch (err) {
     console.error("Join save error:", err);

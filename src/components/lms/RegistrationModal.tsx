@@ -82,40 +82,53 @@ export function RegistrationModal({ isOpen, onClose, onLoginClick }: Registratio
       // setIsSuccess(true);
       // toast.success('সফলভাবে সাবমিট হয়েছে!');
 
-      // ---------------- MONGODB SAVE ----------------
-      // ---------------- MONGODB SAVE ----------------
+      // ---------------- SUPABASE SAVE ----------------
       try {
-        const response = await fetch(`${API_BASE_URL}/api/join`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: formData.name,
-            phone: formData.phone,
-            email: formData.email,
-            address: formData.address,
-          }),
-        });
+        const { error: supabaseErr } = await supabase
+          .from('joins')
+          .insert([
+            {
+              name: formData.name,
+              phone: formData.phone,
+              email: formData.email,
+              address: formData.address,
+            },
+          ]);
 
-
-        const result = await response.json();
-
-        if (!response.ok) {
-          console.error("Server save failed:", result);
-          toast.error("Server-এ তথ্য সংরক্ষণ ব্যর্থ হয়েছে");
+        if (supabaseErr) {
+          console.error("Supabase save failed:", supabaseErr);
+          toast.error("ডাটাবেজে তথ্য সংরক্ষণ ব্যর্থ হয়েছে");
+          setIsLoading(false);
           return;
         }
 
-        // ✅ SUCCESS ONLY IF MONGODB OK
+        // Sync to backend if configured and running locally/custom production
+        if (API_BASE_URL && !API_BASE_URL.includes("lovable.app")) {
+          try {
+            await fetch(`${API_BASE_URL}/api/join`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                name: formData.name,
+                phone: formData.phone,
+                email: formData.email,
+                address: formData.address,
+              }),
+            });
+          } catch (e) {
+            console.warn("Backend API sync failed:", e);
+          }
+        }
+
         setIsSuccess(true);
         toast.success("সফলভাবে সাবমিট হয়েছে!");
 
-      } catch (mongoErr) {
-        console.error("Server error:", mongoErr);
-        toast.error("Server সংযোগে সমস্যা হয়েছে");
+      } catch (dbErr) {
+        console.error("Database error:", dbErr);
+        toast.error("ডাটাবেজ সংযোগে সমস্যা হয়েছে");
       }
-
       // ------------------------------------------------
 
 

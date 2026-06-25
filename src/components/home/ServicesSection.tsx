@@ -67,18 +67,21 @@ export function ServicesSection() {
   const { language } = useLanguage();
 
   return (
-    <section id="services" className="py-16 bg-secondary/30">
-      <div className="container mx-auto px-4">
+    <section id="services" className="py-12 sm:py-16 bg-secondary/30 relative overflow-hidden">
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,hsl(220,60%,35%,0.05),transparent_60%)]" />
+      <div className="container mx-auto px-4 relative">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="text-center mb-10 sm:mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
-            {language === 'bn' ? 'সেবাসমূহ' : 'Our Services'}
-          </h2>
-          <p className="text-muted-foreground max-w-2xl mx-auto">
+          <div className="section-divider pb-4 inline-block">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-2">
+              {language === 'bn' ? 'সেবাসমূহ' : 'Our Services'}
+            </h2>
+          </div>
+          <p className="text-muted-foreground max-w-2xl mx-auto mt-4">
             {language === 'bn' 
               ? 'বাইতুল আমান মসজিদ থেকে আমরা যে সেবা প্রদান করি'
               : 'Services provided by Baitul Aman Mosque'
@@ -86,24 +89,24 @@ export function ServicesSection() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 max-w-6xl mx-auto">
           {services.map((service, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ delay: index * 0.1, duration: 0.5 }}
             >
-              <Card className="card-elevated h-full hover:border-primary/30 transition-colors group">
-                <CardContent className="p-6 text-center">
-                  <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+              <Card className="card-hover h-full border border-transparent hover:border-primary/30 group cursor-default gradient-border">
+                <CardContent className="p-5 sm:p-6 text-center">
+                  <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 flex items-center justify-center mx-auto mb-4 text-primary group-hover:bg-gradient-to-br group-hover:from-primary group-hover:to-primary/80 group-hover:text-primary-foreground group-hover:scale-110 group-hover:shadow-lg transition-all duration-300">
                     {service.icon}
                   </div>
-                  <h3 className="text-lg font-semibold text-foreground mb-2">
+                  <h3 className="text-base sm:text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
                     {language === 'bn' ? service.titleBn : service.titleEn}
                   </h3>
-                  <p className="text-muted-foreground text-sm">
+                  <p className="text-muted-foreground text-xs sm:text-sm">
                     {language === 'bn' ? service.descriptionBn : service.descriptionEn}
                   </p>
                 </CardContent>

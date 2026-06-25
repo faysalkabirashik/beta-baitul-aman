@@ -69,6 +69,10 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        header: {
+          DEFAULT: "hsl(var(--header))",
+          foreground: "hsl(var(--header-foreground))",
+        },
         "header-bar": {
           DEFAULT: "hsl(var(--header-bar))",
           foreground: "hsl(var(--header-bar-foreground))",
@@ -116,6 +120,31 @@ export default {
           "0%": { backgroundPosition: "-200% 0" },
           "100%": { backgroundPosition: "200% 0" },
         },
+        "gradient-shift": {
+          "0%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+          "100%": { backgroundPosition: "0% 50%" },
+        },
+        "float-slow": {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%": { transform: "translateY(-8px)" },
+        },
+        "pulse-glow": {
+          "0%, 100%": { boxShadow: "0 0 8px hsl(40 90% 50% / 0.3)" },
+          "50%": { boxShadow: "0 0 20px hsl(40 90% 50% / 0.6)" },
+        },
+        "scale-up": {
+          "0%": { transform: "scale(1)" },
+          "100%": { transform: "scale(1.05)" },
+        },
+        "slide-up-fade": {
+          "0%": { transform: "translateY(20px)", opacity: "0" },
+          "100%": { transform: "translateY(0)", opacity: "1" },
+        },
+        "bounce-gentle": {
+          "0%, 100%": { transform: "translateY(0)" },
+          "50%": { transform: "translateY(-5px)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -127,6 +156,12 @@ export default {
         "slide-in-bottom": "slide-in-bottom 0.4s ease-out",
         "clock-dock": "clock-dock 0.5s ease-in-out",
         shimmer: "shimmer 2s linear infinite",
+        "gradient-shift": "gradient-shift 4s ease infinite",
+        "float-slow": "float-slow 4s ease-in-out infinite",
+        "pulse-glow": "pulse-glow 2s ease-in-out infinite",
+        "scale-up": "scale-up 0.3s ease-out",
+        "slide-up-fade": "slide-up-fade 0.5s ease-out",
+        "bounce-gentle": "bounce-gentle 2s ease-in-out infinite",
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

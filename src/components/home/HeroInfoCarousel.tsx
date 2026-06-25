@@ -99,38 +99,38 @@ export function HeroInfoCarousel() {
       onTouchEnd={handleTouchEnd}
     >
       {/* Carousel Container */}
-      <div className="relative min-h-[160px] md:min-h-[140px] overflow-hidden rounded-xl bg-white/10 backdrop-blur-md border border-white/20 cursor-pointer hover:bg-white/15 transition-colors">
+      <div className="relative min-h-[150px] sm:min-h-[140px] overflow-hidden rounded-xl bg-white/10 backdrop-blur-md border border-white/20 cursor-pointer hover:bg-white/15 transition-all hover:scale-[1.01]">
         <AnimatePresence mode="wait">
           <motion.div
             key={slides[currentSlide].id}
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -50 }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
-            className="p-4 md:p-5 flex flex-col"
+            initial={{ opacity: 0, y: 10, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.98 }}
+            transition={{ duration: 0.35, ease: 'easeOut' }}
+            className="p-3 sm:p-5 flex flex-col"
           >
             {/* Header */}
-            <div className="flex items-center gap-2 mb-3">
-              <div className="w-8 h-8 flex-shrink-0 rounded-full bg-golden/20 flex items-center justify-center text-golden">
+            <div className="flex items-center gap-2 mb-2 sm:mb-3">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 flex-shrink-0 rounded-full bg-golden/20 flex items-center justify-center text-golden">
                 {slides[currentSlide].icon}
               </div>
-              <h3 className="text-sm font-semibold text-golden">
+              <h3 className="text-xs sm:text-sm font-semibold text-golden">
                 {t(slides[currentSlide].titleKey)}
               </h3>
             </div>
 
             {/* Content */}
-            <div className="flex-1 flex flex-col justify-center overflow-hidden px-8">
+            <div className="flex-1 flex flex-col justify-center overflow-hidden px-4 sm:px-8">
               {slides[currentSlide].content.arabic && (
-                <p className="text-base md:text-xl font-arabic text-right text-white mb-2 leading-relaxed" dir="rtl">
+                <p className="text-sm sm:text-base md:text-xl font-arabic text-right text-white mb-2 leading-relaxed" dir="rtl">
                   {slides[currentSlide].content.arabic}
                 </p>
               )}
-              <p className="text-sm md:text-base text-white/90 bengali-text leading-relaxed">
+              <p className="text-xs sm:text-sm md:text-base text-white/90 bengali-text leading-relaxed">
                 {slides[currentSlide].content.bangla}
               </p>
               {slides[currentSlide].content.reference && (
-                <p className="text-xs text-white/60 mt-2">
+                <p className="text-[10px] sm:text-xs text-white/60 mt-1 sm:mt-2">
                   — {slides[currentSlide].content.reference}
                 </p>
               )}
@@ -141,28 +141,28 @@ export function HeroInfoCarousel() {
         {/* Navigation Arrows */}
         <button
           onClick={prevSlide}
-          className="absolute left-1 md:left-2 top-1/2 -translate-y-1/2 w-7 h-7 md:w-8 md:h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors z-10"
+          className="absolute left-1 md:left-2 top-1/2 -translate-y-1/2 w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors z-10 hover:scale-110"
         >
-          <ChevronLeft className="w-4 h-4" />
+          <ChevronLeft className="w-3 h-3 sm:w-4 sm:h-4" />
         </button>
         <button
           onClick={nextSlide}
-          className="absolute right-1 md:right-2 top-1/2 -translate-y-1/2 w-7 h-7 md:w-8 md:h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors z-10"
+          className="absolute right-1 md:right-2 top-1/2 -translate-y-1/2 w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors z-10 hover:scale-110"
         >
-          <ChevronRight className="w-4 h-4" />
+          <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4" />
         </button>
       </div>
 
       {/* Navigation Dots */}
-      <div className="flex justify-center gap-2 mt-3">
+      <div className="flex justify-center gap-2 mt-2 sm:mt-3">
         {slides.map((slide, index) => (
           <button
             key={slide.id}
             onClick={() => goToSlide(index)}
-            className={`w-2 h-2 rounded-full transition-all duration-300 ${
+            className={`rounded-full transition-all duration-300 ${
               index === currentSlide
-                ? 'bg-golden w-6'
-                : 'bg-white/40 hover:bg-white/60'
+                ? 'bg-golden w-5 sm:w-6 h-2'
+                : 'bg-white/40 hover:bg-white/60 w-2 h-2'
             }`}
             aria-label={`Go to slide ${index + 1}`}
           />

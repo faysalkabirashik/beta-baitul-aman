@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useLanguage, toBengaliNumber } from '@/contexts/LanguageContext';
+import { supabase } from '@/integrations/supabase/client';
 import { TopBar } from '@/components/layout/TopBar';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
@@ -14,123 +15,26 @@ import { RegistrationModal } from '@/components/lms/RegistrationModal';
 import { CourseInfoSection } from '@/components/lms/CourseInfoSection';
 import { Button } from '@/components/ui/button';
 import { useScrollPosition } from '@/hooks/useFloatingClock';
-import { ArrowRight, User } from 'lucide-react';
+import { ArrowRight, User, Loader2, BookOpen } from 'lucide-react';
 import baitulAmanNight from '@/assets/baitul-aman-night.png';
 
-const lectures = [
-  {
-    id: 1,
-    title: 'কুরআন ক্লাস - ৩',
-    videoUrl: 'https://www.youtube.com/watch?v=Jf83GEAr2Bs',
-    description: 'তাজবীদের মূল নিয়মাবলী ও মাখরাজ শিক্ষা।',
-    date: '১১ জানুয়ারি ২০২৬',
-    quiz: [],
-  },
-  {
-    id: 2,
-    title: 'কুরআন ক্লাস - ৪',
-    videoUrl: 'https://www.youtube.com/watch?v=nFcmV_keW-Y',
-    description: 'নূন সাকিন ও তানবীনের বিধান।',
-    date: '১২ জানুয়ারি ২০২৬',
-    quiz: [],
-  },
-  {
-    id: 3,
-    title: 'কুরআন ক্লাস - ৫',
-    videoUrl: 'https://www.youtube.com/watch?v=I0J7mVKyMD8',
-    description: 'কুরআন শিক্ষা – ক্লাস ৫',
-    date: '১৩ জানুয়ারি ২০২৬',
-    quiz: [],
-  },
-  {
-    id: 4,
-    title: 'কুরআন ক্লাস - ৬',
-    videoUrl: 'https://www.youtube.com/watch?v=gpHnaQgbwC8',
-    description: 'কুরআন শিক্ষা – ক্লাস ৬',
-    date: '১৪ জানুয়ারি ২০২৬',
-    quiz: [],
-  },
-  {
-    id: 5,
-    title: 'কুরআন ক্লাস - ৭',
-    videoUrl: 'https://www.youtube.com/watch?v=SvCpvzApr64',
-    description: 'কুরআন শিক্ষা – ক্লাস ৭',
-    date: '১৫ জানুয়ারি ২০২৬',
-    quiz: [],
-  },
-  {
-    id: 6,
-    title: 'কুরআন ক্লাস - ৮',
-    videoUrl: 'https://www.youtube.com/watch?v=1XBJ-4iKn1w',
-    description: 'কুরআন শিক্ষা – ক্লাস ৮',
-    date: '১৬ জানুয়ারি ২০২৬',
-    quiz: [],
-  },
-  {
-    id: 7,
-    title: 'কুরআন ক্লাস - ৯',
-    videoUrl: 'https://www.youtube.com/watch?v=2gYxGOXCufM',
-    description: 'কুরআন শিক্ষা – ক্লাস ৯',
-    date: '১৭ জানুয়ারি ২০২৬',
-    quiz: [],
-  },
-  {
-    id: 8,
-    title: 'কুরআন ক্লাস - ১০',
-    videoUrl: 'https://www.youtube.com/watch?v=3tGxc3ogt-4',
-    description: 'কুরআন শিক্ষা – ক্লাস ১০',
-    date: '১৮ জানুয়ারি ২০২৬',
-    quiz: [],
-  },
-  {
-    id: 9,
-    title: 'কুরআন ক্লাস - ১১',
-    videoUrl: 'https://www.youtube.com/watch?v=YpzEXiK3w5E',
-    description: 'সূরা আল-ফাতিহার সঠিক তিলাওয়াত শিক্ষা।',
-    date: '১৯ জানুয়ারি ২০২৬',
-    quiz: [],
-  },
-  {
-    id: 10,
-    title: 'কুরআন ক্লাস - ১২',
-    videoUrl: 'https://www.youtube.com/watch?v=O8Skcq2YM7U',
-    description: 'কুরআন শিক্ষা – ক্লাস ১২',
-    date: '২০ জানুয়ারি ২০২৬',
-    quiz: [],
-  },
-  {
-    id: 11,
-    title: 'কুরআন ক্লাস - ১৩',
-    videoUrl: 'https://www.youtube.com/watch?v=6An7rZElstg',
-    description: 'কুরআন শিক্ষা – ক্লাস ১৩',
-    date: '২১ জানুয়ারি ২০২৬',
-    quiz: [],
-  },
-  {
-    id: 12,
-    title: 'কুরআন ক্লাস - ১৪',
-    videoUrl: 'https://www.youtube.com/watch?v=A41KlidKBSw',
-    description: 'কুরআন শিক্ষা – ক্লাস ১৪',
-    date: '২২ জানুয়ারি ২০২৬',
-    quiz: [],
-  },
-  {
-    id: 13,
-    title: 'কুরআন ক্লাস - ১৫',
-    videoUrl: 'https://www.youtube.com/watch?v=DaRmOTWw0gY',
-    description: 'কুরআন শিক্ষা – ক্লাস ১৫',
-    date: '২৩ জানুয়ারি ২০২৬',
-    quiz: [],
-  },
-];
-
-
+interface Lecture {
+  id: number;
+  title: string;
+  videoUrl: string;
+  description: string | null;
+  date: string | null;
+  quiz: never[];
+}
 
 export default function LearnQuran() {
   const { t, language } = useLanguage();
   const navigate = useNavigate();
   const { isScrolled } = useScrollPosition();
-  
+
+  const [lectures, setLectures] = useState<Lecture[]>([]);
+  const [loading, setLoading] = useState(true);
+
   const [currentLecture, setCurrentLecture] = useState(() => {
     const saved = localStorage.getItem('baitul-aman-lecture');
     return saved ? parseInt(saved, 10) : 0;
@@ -139,12 +43,43 @@ export default function LearnQuran() {
   const [showRegistration, setShowRegistration] = useState(false);
 
   useEffect(() => {
+    const fetchLectures = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('quran_lectures')
+          .select('*')
+          .eq('is_active', true)
+          .order('sort_order', { ascending: true })
+          .order('created_at', { ascending: true });
+
+        if (error) throw error;
+        setLectures(
+          (data || []).map((l) => ({
+            id: l.id,
+            title: l.title,
+            videoUrl: l.video_url,
+            description: l.description,
+            date: l.date,
+            quiz: [],
+          }))
+        );
+      } catch {
+        setLectures([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLectures();
+  }, []);
+
+  useEffect(() => {
     localStorage.setItem('baitul-aman-lecture', String(currentLecture));
   }, [currentLecture]);
 
   const handleNext = () => {
     const lecture = lectures[currentLecture];
-    if (lecture.quiz.length > 0) {
+    if (lecture && lecture.quiz.length > 0) {
       setShowQuiz(true);
     } else {
       goToNextLecture();
@@ -153,13 +88,13 @@ export default function LearnQuran() {
 
   const goToNextLecture = () => {
     if (currentLecture < lectures.length - 1) {
-      setCurrentLecture(prev => prev + 1);
+      setCurrentLecture((prev) => prev + 1);
     }
   };
 
   const handlePrevious = () => {
     if (currentLecture > 0) {
-      setCurrentLecture(prev => prev - 1);
+      setCurrentLecture((prev) => prev - 1);
     }
   };
 
@@ -182,6 +117,33 @@ export default function LearnQuran() {
     navigate('/auth');
   };
 
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <TopBar showDockedClock={isScrolled} />
+        <Header />
+        <div className="flex justify-center items-center py-32">
+          <Loader2 className="w-10 h-10 animate-spin text-primary" />
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
+  if (lectures.length === 0) {
+    return (
+      <div className="min-h-screen bg-background">
+        <TopBar showDockedClock={isScrolled} />
+        <Header />
+        <div className="flex flex-col items-center justify-center py-32 text-muted-foreground">
+          <BookOpen className="w-16 h-16 mb-4 text-primary/40" />
+          <p className="text-lg">{language === 'bn' ? 'কোনো লেকচার পাওয়া যায়নি' : 'No lectures available yet'}</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <TopBar showDockedClock={isScrolled} />
@@ -198,7 +160,7 @@ export default function LearnQuran() {
           {/* Greenish gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/60 to-primary/30" />
         </div>
-        
+
         <div className="relative h-full container mx-auto px-4 py-8 flex flex-col justify-between">
           {/* Top Content */}
           <motion.div
@@ -267,7 +229,7 @@ export default function LearnQuran() {
                   >
                     {t('lms.previous')}
                   </Button>
-                  
+
                   <Button
                     onClick={handleNext}
                     disabled={currentLecture === lectures.length - 1}
@@ -342,4 +304,3 @@ export default function LearnQuran() {
     </div>
   );
 }
-

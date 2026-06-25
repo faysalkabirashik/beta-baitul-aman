@@ -87,38 +87,54 @@ export function BookStore() {
         },
       });
 
-      // ---------------- MONGODB SAVE ----------------
-
-
-
-
+      // ---------------- SUPABASE SAVE ----------------
       try {
-        const response = await fetch("http://localhost:5000/api/order", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            name: formData.name,
-            phone: formData.phone,
-            address: formData.address,
+        const { error: supabaseErr } = await supabase
+          .from('orders')
+          .insert([
+            {
+              name: formData.name,
+              phone: formData.phone,
+              address: formData.address,
+              book_title: mainBook.title,
+              quantity: quantity,
+              total_price: totalPrice,
+              order_type: 'buy',
+            },
+          ]);
 
-            bookTitle: mainBook.title,
-            quantity: quantity,
-            totalPrice: totalPrice,
-            orderType: "buy",
-          }),
-        });
-
-        const result = await response.json();
-
-        if (!response.ok) {
-          console.error("Server order save failed:", result);
-          toast.error("Server-এ অর্ডার সংরক্ষণ ব্যর্থ হয়েছে");
+        if (supabaseErr) {
+          console.error("Supabase order save failed:", supabaseErr);
+          toast.error("ডাটাবেজে অর্ডার সংরক্ষণ ব্যর্থ হয়েছে");
+          setIsSubmitting(false);
+          return;
         }
-      } catch (mongoErr) {
-        console.error("Server error:", mongoErr);
-        toast.error("Server সংযোগে সমস্যা হয়েছে");
+
+        // Sync to backend if configured and running locally/custom production
+        if (API_BASE_URL && !API_BASE_URL.includes("lovable.app")) {
+          try {
+            await fetch(`${API_BASE_URL}/api/order`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                name: formData.name,
+                phone: formData.phone,
+                address: formData.address,
+                bookTitle: mainBook.title,
+                quantity: quantity,
+                totalPrice: totalPrice,
+                orderType: "buy",
+              }),
+            });
+          } catch (e) {
+            console.warn("Backend API sync failed:", e);
+          }
+        }
+      } catch (dbErr) {
+        console.error("Database error:", dbErr);
+        toast.error("ডাটাবেজ সংযোগে সমস্যা হয়েছে");
       }
       // ------------------------------------------------
 

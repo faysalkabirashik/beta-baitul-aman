@@ -5,7 +5,6 @@ import { HeroSection } from '@/components/home/HeroSection';
 import { PrayerTimesSection } from '@/components/home/PrayerTimesSection';
 import { NoticeBoard } from '@/components/home/NoticeBoard';
 import { ServicesSection } from '@/components/home/ServicesSection';
-import { AboutSection } from '@/components/home/AboutSection';
 import { Footer } from '@/components/layout/Footer';
 import { RamadanCalendarFAB } from '@/components/ramadan/RamadanCalendarFAB';
 
@@ -21,7 +20,6 @@ const Index = () => {
         <PrayerTimesSection />
         <NoticeBoard />
         <ServicesSection />
-        <AboutSection />
       </main>
       <Footer />
       <RamadanCalendarFAB />

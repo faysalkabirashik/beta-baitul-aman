@@ -156,7 +156,7 @@ export function QuizModal({ isOpen, onClose, onComplete, onSkip, quiz, lectureNu
             <Button
               onClick={handleSubmit}
               disabled={!selectedAnswer}
-              className="btn-emerald text-white"
+              className="btn-primary text-white"
             >
               {t('lms.submit')}
             </Button>

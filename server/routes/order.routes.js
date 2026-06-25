@@ -1,19 +1,32 @@
 import express from "express";
-import Order from "../models/Order.js";
+import { supabase } from "../index.js";
 
 const router = express.Router();
 
 /**
- * POST /api/order
+ * POST /api/orde
  */
 router.post("/", async (req, res) => {
   try {
-    const order = new Order(req.body);
-    await order.save();
+    const { name, phone, address, bookTitle, quantity, totalPrice, orderType } = req.body;
+    
+    const { error } = await supabase
+      .from("orders")
+      .insert([{
+        name,
+        phone,
+        address,
+        book_title: bookTitle,
+        quantity,
+        total_price: totalPrice,
+        order_type: orderType || "buy"
+      }]);
+
+    if (error) throw error;
 
     res.status(201).json({
       success: true,
-      message: "Order saved to MongoDB",
+      message: "Order saved to Supabase",
     });
   } catch (err) {
     console.error("Order save error:", err);

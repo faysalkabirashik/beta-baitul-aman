@@ -5,7 +5,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { ScrollToTop } from "@/components/layout/ScrollToTop";
+import { AppDownloadBar } from "@/components/common/AppDownloadBar";
 import Index from "./pages/Index";
+import About from "./pages/About";
 import LearnQuran from "./pages/LearnQuran";
 import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
@@ -22,10 +24,12 @@ const App = () => (
           <ScrollToTop />
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/about" element={<About />} />
             <Route path="/learn-quran" element={<LearnQuran />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
+          <AppDownloadBar />
         </BrowserRouter>
       </TooltipProvider>
     </LanguageProvider>
