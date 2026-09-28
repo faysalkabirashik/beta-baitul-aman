@@ -2,7 +2,7 @@
 
 ## Project info
 
-**URL**: https://beta-baitul-aman.lovable.app/
+**URL**: 
 
 
 
